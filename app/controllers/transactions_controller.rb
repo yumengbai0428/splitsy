@@ -5,6 +5,10 @@ class TransactionsController < ApplicationController
         # will render app/views/transactions/show.<extension> by default
     end
 
+    def index
+        @transactions = Transaction.all
+    end
+
     def destroy
         @transaction = Transaction.find(params[:id])
         @transaction.destroy
