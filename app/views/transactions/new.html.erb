@@ -1,0 +1,19 @@
+<h2>Create New Transaction</h2>
+
+<%= form_tag transactions_path, :class => 'form' do %>
+  <%= label :transaction, :title, 'Payer Email', :class => 'col-form-label' %>
+  <%= text_field :transaction, :payer_email, :class => 'form-control' %>
+  <%= label :transaction, :title, 'Payee Email', :class => 'col-form-label' %>
+  <%= text_field :transaction, :payee_email, :class => 'form-control' %>
+  <%= label :transaction, :title, 'Description', :class => 'col-form-label' %>
+  <%= text_field :transaction, :description, :class => 'form-control' %>
+  <%= label :transaction, :title, 'Currency', :class => 'col-form-label' %>
+  <%= text_field :transaction, :currency, :class => 'form-control' %>
+  <%= label :transaction, :title, 'Amount', :class => 'col-form-label' %>
+  <%= text_field :transaction, :amount, :class => 'form-control' %>
+  <%= label :transaction, :title, 'Percentage', :class => 'col-form-label' %>
+  <%= text_field :transaction, :percentage, :class => 'form-control' %>
+  <br/>
+  <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>
+  <%= link_to 'Cancel', transactions_path, :class => 'btn btn-secondary' %>
+<% end %>

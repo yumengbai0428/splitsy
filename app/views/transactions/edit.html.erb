@@ -1,0 +1,10 @@
+<h2>Edit Existing Transaction</h2>
+<%= form_tag transaction_path(@transaction), :method => :put do %>
+  <%= label :transaction, :payer_email, 'Payer Email', :class => 'col-form-label' %>
+  <%= text_field :transaction, 'payer_email', :class => 'form-control' %>
+  <%= label :transaction, :payee_email, 'Payee Email', :class => 'col-form-label' %>
+  <%= text_field :transaction, 'payee_email', :class => 'form-control' %>
+  <br/>
+  <%= submit_tag 'Update Transaction Info', :class => 'btn btn-primary' %>
+  <%= link_to 'Cancel', transactions_path, :class => 'btn btn-secondary' %>
+<% end %>

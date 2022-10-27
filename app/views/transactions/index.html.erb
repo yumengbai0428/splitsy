@@ -1,0 +1,40 @@
+<!--  This file is app/views/transactions/index.html.erb -->
+<h2>All Transactions</h2>
+
+<table class="table table-striped col-md-12" id="transactions">
+  <thead>
+    <tr>
+      <th>Payer</th>
+      <th>Payee</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Currency</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td>
+          <%= transaction.payer_email %>
+        </td>
+        <td>
+          <%= transaction.payee_email %>
+        </td>
+        <td>
+          <%= transaction.description %>
+        </td>
+        <td>
+          <%= transaction.amount %>
+        </td>
+        <td>
+          <%= transaction.currency %>
+        </td>
+        <td>
+          <%= transaction.percentage %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Add new transaction', new_transaction_path, :class => 'btn btn-primary' %>

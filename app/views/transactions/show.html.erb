@@ -1,0 +1,20 @@
+<!--  app/views/transactions/show.html.erb -->
+<h2>Details about <em><%= @transaction.title %></em></h2>
+
+<ul id="details">
+  <li>
+    Rating:
+    <%= @transaction.payee_email %>
+  </li>
+</ul>
+
+<h3>Description:</h3>
+<p id="description">
+  <%= @transaction.description %>
+</p>
+
+<div class="row">
+  <%= link_to 'Edit', edit_transaction_path(@transaction), :class => 'btn btn-primary col-2' %>
+  <%= link_to 'Delete', transaction_path(@transaction), 'data-method' => 'delete', 'data-confirm' => 'Are you sure?', :class => 'btn btn-danger col-2' %>
+  <%= link_to 'Back to transaction list', transactions_path, :class => 'btn btn-primary col-2' %>
+</div>
