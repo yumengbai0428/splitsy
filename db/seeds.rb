@@ -6,18 +6,31 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-movies = [{:title => 'Aladdin', :rating => 'G', :release_date => '25-Nov-1992'},
-    	  {:title => 'The Terminator', :rating => 'R', :release_date => '26-Oct-1984'},
-    	  {:title => 'When Harry Met Sally', :rating => 'R', :release_date => '21-Jul-1989'},
-      	  {:title => 'The Help', :rating => 'PG-13', :release_date => '10-Aug-2011'},
-      	  {:title => 'Chocolat', :rating => 'PG-13', :release_date => '5-Jan-2001'},
-      	  {:title => 'Amelie', :rating => 'R', :release_date => '25-Apr-2001'},
-      	  {:title => '2001: A Space Odyssey', :rating => 'G', :release_date => '6-Apr-1968'},
-      	  {:title => 'The Incredibles', :rating => 'PG', :release_date => '5-Nov-2004'},
-      	  {:title => 'Raiders of the Lost Ark', :rating => 'PG', :release_date => '12-Jun-1981'},
-      	  {:title => 'Chicken Run', :rating => 'G', :release_date => '21-Jun-2000'},
+users = [{:name => 'Aladdin', :email => 'aladdin@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Bob', :email => 'bob@gmail', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Carla', :email => 'carla@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'David', :email => 'david@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Emma', :email => 'emma@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Frank', :email => 'frank@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Greg', :email => 'greg@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Howard', :email => 'howard@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Iris', :email => 'iris@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Jack', :email => 'jack@gmail.com', :password => 'password', :default_currency => 'US dollar'},
   	 ]
 
-movies.each do |movie|
-  Movie.create!(movie)
+transactions = [{:user1 => "Aladdin", :user2 => "Bob", :description => "Thai food for lunch", :currency => "US dollar", :amount => 50, :percentage => 0.25},
+		{:user1 => "Aladdin", :user2 => "Bob", :description => "Concert", :currency => "US dollar", :amount => 100, :percentage => 0.5},
+		{:user1 => "Aladdin", :user2 => "Carla", :description => "Bar", :currency => "US dollar", :amount => 20, :percentage => 0.75},
+		{:user1 => "David", :user2 => "Aladdin", :description => "School supplies", :currency => "US dollar", :amount => 20, :percentage => 1},
+		{:user1 => "Emma", :user2 => "Aladdin", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33},
+		{:user1 => "Emma", :user2 => "Jack", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33},
+		{:user1 => "Emma", :user2 => "Iris", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33},
+	]
+
+users.each do |user|
+  User.create!(user)
+end
+
+transactions.each do |transaction|
+	Transactions.create!(transaction)
 end
