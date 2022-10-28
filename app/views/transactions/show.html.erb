@@ -1,10 +1,18 @@
 <!--  app/views/transactions/show.html.erb -->
-<h2>Details about <em><%= @transaction.title %></em></h2>
+<h2>Details about <em><%= @transaction.id %></em></h2>
 
 <ul id="details">
+<li>
+    Payer:
+    <%= @transaction.payer_email %>
+  </li>
   <li>
-    Rating:
+    Payee:
     <%= @transaction.payee_email %>
+  </li>
+  <li>
+    Amount:
+    <%= @converted_amount %>
   </li>
 </ul>
 

@@ -1,36 +1,48 @@
 class TransactionsController < ApplicationController
     def show
-        id = params[:id] # retrieve transaction ID from URI route
-        @transaction = Transaction.find(id) # look up transaction by unique ID
-        # will render app/views/transactions/show.<extension> by default
+        id = params[:id]
+        @transaction = Transaction.find(id)
+        @converted_amount = convert_amount
+        print
     end
 
     def index
+        print("vainko")
         @transactions = Transaction.all
+        @users = Transaction.all_user_mails
     end
 
     def destroy
         @transaction = Transaction.find(params[:id])
         @transaction.destroy
-        flash[:notice] = "Transaction '#{@transaction.title}' deleted."
+        flash[:notice] = "Transaction '#{@transaction.id}' deleted."
         redirect_to transactions_path
     end
 
+    def new 
+        @users = Transaction.all_user_mails
+    end
+
     def edit
+        @users = Transaction.all_user_mails
         @transaction = Transaction.find params[:id]
     end
 
     def create
         @transaction = Transaction.create!(transaction_params)
-        flash[:notice] = "#{@transaction.text} was successfully created."
+        flash[:notice] = "#{@transaction.id} was successfully created."
         redirect_to transactions_path
     end
 
     def update
         @transaction = Transaction.find params[:id]
         @transaction.update_attributes!(transaction_params)
-        flash[:notice] = "#{@transaction.text} was successfully updated."
+        flash[:notice] = "#{@transaction.id} was successfully updated."
         redirect_to transaction_path(@transaction)
+    end
+
+    def convert_amount
+        return @transaction.amount.to_s + " (" + @transaction.currency + ")"
     end
 
     private

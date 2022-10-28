@@ -1,9 +1,17 @@
 <h2>Edit Existing Transaction</h2>
 <%= form_tag transaction_path(@transaction), :method => :put do %>
   <%= label :transaction, :payer_email, 'Payer Email', :class => 'col-form-label' %>
-  <%= text_field :transaction, 'payer_email', :class => 'form-control' %>
+  <%= select :transaction, :payer_email, @users, {}, {:class => 'form-control col-3'} %>
   <%= label :transaction, :payee_email, 'Payee Email', :class => 'col-form-label' %>
-  <%= text_field :transaction, 'payee_email', :class => 'form-control' %>
+  <%= select :transaction, :payee_email, @users, {}, {:class => 'form-control col-3'} %>
+  <%= label :transaction, :description, 'Description', :class => 'col-form-label' %>
+  <%= text_field :transaction, 'description', :class => 'form-control' %>
+  <%= label :transaction, :currency, 'Currency', :class => 'col-form-label'  %>
+  <%= select :transaction, :currency, ['US dollar', 'Rupee', 'Euro', 'Yen', 'Yuan', 'Canadian dollar'], {}, {:class => 'form-control col-2'} %>
+  <%= label :transaction, :amount, 'Amount', :class => 'col-form-label' %>
+  <%= text_field :transaction, 'amount', :class => 'form-control' %>
+  <%= label :transaction, :percentage, 'Percentage split', :class => 'col-form-label' %>
+  <%= text_field :transaction, 'percentage', :class => 'form-control' %>
   <br/>
   <%= submit_tag 'Update Transaction Info', :class => 'btn btn-primary' %>
   <%= link_to 'Cancel', transactions_path, :class => 'btn btn-secondary' %>

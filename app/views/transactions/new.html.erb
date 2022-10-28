@@ -1,17 +1,17 @@
 <h2>Create New Transaction</h2>
 
 <%= form_tag transactions_path, :class => 'form' do %>
-  <%= label :transaction, :title, 'Payer Email', :class => 'col-form-label' %>
-  <%= text_field :transaction, :payer_email, :class => 'form-control' %>
-  <%= label :transaction, :title, 'Payee Email', :class => 'col-form-label' %>
-  <%= text_field :transaction, :payee_email, :class => 'form-control' %>
-  <%= label :transaction, :title, 'Description', :class => 'col-form-label' %>
+  <%= label :transaction, :payer_email, 'Payer Email', :class => 'col-form-label' %>
+  <%= select :transaction, :payer_email, @users, {}, {:class => 'form-control col-3'} %>
+  <%= label :transaction, :payee_email, 'Payee Email', :class => 'col-form-label' %>
+  <%= select :transaction, :payee_email, @users, {}, {:class => 'form-control col-3'} %>
+  <%= label :transaction, :description, 'Description', :class => 'col-form-label' %>
   <%= text_field :transaction, :description, :class => 'form-control' %>
-  <%= label :transaction, :title, 'Currency', :class => 'col-form-label' %>
-  <%= text_field :transaction, :currency, :class => 'form-control' %>
-  <%= label :transaction, :title, 'Amount', :class => 'col-form-label' %>
+  <%= label :transaction, :currency, 'Currency', :class => 'col-form-label' %>
+  <%= select :transaction, :currency, ['US dollar', 'Rupee', 'Euro', 'Yen', 'Yuan', 'Canadian dollar'], {}, {:class => 'form-control col-2'} %>
+  <%= label :transaction, :amount, 'Amount', :class => 'col-form-label' %>
   <%= text_field :transaction, :amount, :class => 'form-control' %>
-  <%= label :transaction, :title, 'Percentage', :class => 'col-form-label' %>
+  <%= label :transaction, :percentage, 'Percentage split', :class => 'col-form-label' %>
   <%= text_field :transaction, :percentage, :class => 'form-control' %>
   <br/>
   <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>

@@ -9,7 +9,7 @@
       <th>Description</th>
       <th>Amount</th>
       <th>Currency</th>
-      <th>Percentage</th>
+      <th>More info</th>
     </tr>
   </thead>
   <tbody>
@@ -31,7 +31,7 @@
           <%= transaction.currency %>
         </td>
         <td>
-          <%= transaction.percentage %>
+          <%= link_to "More about this transaction", transaction_path(transaction) %>
         </td>
       </tr>
     <% end %>
