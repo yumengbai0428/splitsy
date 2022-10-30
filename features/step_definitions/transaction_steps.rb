@@ -45,6 +45,11 @@ Then /^I should (not )?see the following transactions: (.*)$/ do |no, transactio
   end
 end
 
+Then /I should see all (.*) transactions/ do |user_name|
+  # Make sure that all the movies in the app are visible in the table
+  expect(page).to have_content("aladdin")
+end
+
 Then /I should see all the transactions/ do
   # Make sure that all the movies in the app are visible in the table
   expect(page).to have_xpath(".//tr[not(ancestor::thead)]", count: Transaction.count)
