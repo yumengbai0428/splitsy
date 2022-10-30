@@ -8,7 +8,7 @@ class TransactionsController < ApplicationController
 
     def index
         print("vainko")
-        @transactions = Transaction.all
+        @transactions = Transaction.all_transactions_for_user("Aladdin")
         @users = Transaction.all_user_mails
     end
 
