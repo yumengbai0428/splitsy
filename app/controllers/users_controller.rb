@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     def index
-        @users = Users.all
+        @users = User.all
     end
 
     def new
@@ -19,6 +19,21 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:user_email])
+    end
+
+    def login
+    end
+
+    def validate
+        User.all.each do |u|
+            if params["user"]["email"] == u.email and params["user"]["password"] == u.password
+                session[:user_email] = u.email
+                redirect_to root_path
+                return
+            end
+        end
+        flash[:notice] = "User login was invalid."
+        redirect_to welcome_path
     end
 
     private

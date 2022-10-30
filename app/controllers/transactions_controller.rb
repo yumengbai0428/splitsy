@@ -3,11 +3,14 @@ class TransactionsController < ApplicationController
         id = params[:id]
         @transaction = Transaction.find(id)
         @converted_amount = convert_amount
-        print
     end
 
     def index
-        @transactions = Transaction.all_transactions_for_user("Aladdin")
+        if session[:user_email] == nil
+            flash[:notice] = "Invalid session, please login."
+            redirect_to welcome_path
+        end
+        @transactions = Transaction.all_transactions_for_user(session[:user_email])
         @users = Transaction.all_user_mails
     end
 

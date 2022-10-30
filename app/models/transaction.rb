@@ -3,7 +3,6 @@ class Transaction < ActiveRecord::Base
         # incomplete function
         email = User.where(name: user_name).distinct.pluck(:email)[0]
         payer_trans = Transaction.where(payer_email: email)
-        print(payer_trans)
         payee_trans = Transaction.where(payee_email: email)
         all_trans = []
         payer_trans.each do |t|
