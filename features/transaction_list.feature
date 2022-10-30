@@ -15,16 +15,8 @@ Background: transactions have been added to database
   | emma@gmail.com     | jack@gmail.com    | Rent2                 | US dollar      | 2000   | 0.33       |
   | emma@gmail.com     | iris@gmail.com    | Rent3                 | US dollar      | 2000   | 0.33       |
 
-  # And  I am on the Splitsy home page
-  # Then 7 seed transactions should exist
+  And I am on the Splitsy home page
+  Then 7 seed transactions should exist
 
-Scenario: Aladdin logged in
-
-  Then I should see "Thai food for lunch"
-  And I should see "Concert"
-  And I should see "Bar"
-  And I should see "School supplies"
-  And I should see "Rent1"
-  # enter step(s) to ensure that other movies are not visible
-  And I should not see "Rent2"
-  And I should not see "Rent3"
+Scenario: I visit the transactions page
+  Then I should see all the transactions

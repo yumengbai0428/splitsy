@@ -9,7 +9,7 @@ Given /the following transactions exist/ do |transactions_table|
   # pending "Fill in this step in movie_steps.rb"
 end
 
-Then /(.*) seed movies should exist/ do | n_seeds |
+Then /(.*) seed transactions should exist/ do | n_seeds |
   expect(Transaction.count).to eq n_seeds.to_i
 end
 
