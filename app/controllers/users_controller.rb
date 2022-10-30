@@ -11,7 +11,7 @@ class UsersController < ApplicationController
         @user = User.new(user_params)
         if @user.save
             session[:user_email] = @user.email
-            redirect_to root_path
+            redirect_to transactions_path
         else
             render :new
         end
@@ -25,10 +25,11 @@ class UsersController < ApplicationController
     end
 
     def validate
-        User.all.each do |u|
-            if params["user"]["email"] == u.email and params["user"]["password"] == u.password
-                session[:user_email] = u.email
-                redirect_to root_path
+        user = User.find_user(params["user"]["email"])
+        if user != nil
+            if user[0].password == params["user"]["password"]
+                session[:user_email] = params["user"]["email"]
+                redirect_to transactions_path
                 return
             end
         end
