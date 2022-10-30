@@ -40,7 +40,7 @@ end
 # Part 2, Step 3
 Then /^I should (not )?see the following transactions: (.*)$/ do |no, transaction_list|
   # Take a look at web_steps.rb Then /^(?:|I )should see "([^"]*)"$/
-  movies.split /,\s*/ do |transaction|
+  transaction_list.split /,\s*/ do |transaction|
     step %(I should #{no}see "#{transaction}")
   end
 end

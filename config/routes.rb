@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   #   resources :products
 
   resources :transactions, :users
+  get 'login', to: 'users#new'
+  post 'login', to: 'users#create'
+  get 'welcome', to: 'sessions#welcome'
   
   # Example resource route with options:
   #   resources :products do
