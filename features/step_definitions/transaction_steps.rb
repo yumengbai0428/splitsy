@@ -45,15 +45,49 @@ Then /^I should (not )?see the following transactions: (.*)$/ do |no, transactio
   end
 end
 
-Then /I should see all (.*) transactions/ do |user_name|
+Then /I should see all transactions of (.*)/ do |user_email|
   # Make sure that all the movies in the app are visible in the table
-  expect(page).to have_content("aladdin")
+  @transaction_list = Transaction.all_transactions_for_user(user_email)
+  expect(@transaction_list.count).to eq(5)
+  
 end
 
-Then /I should see all the transactions/ do
-  # Make sure that all the movies in the app are visible in the table
-  expect(page).to have_xpath(".//tr[not(ancestor::thead)]", count: Transaction.count)
+When /I login as (.*)/ do |user_name|
+  # Write code here that turns the phrase above into concrete actions
+  click_button "Login"
+
+  email = 'aladdin@gmail.com'
+  password = 'secretpass'
+
+  @user = User.create!(
+    :name => user_name,
+    :email => email,
+    :password => password,
+  )
+
+  fill_in "Email", :with => @user.email
+  fill_in "Password", :with => @user.password
+  click_button "Login"
 end
+
+Then /I should be able to sign up/ do
+  # Write code here that turns the phrase above into concrete actions
+  click_button "Sign Up"
+
+  email = 'apple@gmail.com'
+  password = 'apple'
+  name = 'apple'
+
+  fill_in "Name", :with => name
+  fill_in "Email", :with => email
+  fill_in "Password", :with => password
+  click_button "Create User"
+end
+
+#Then /I should see all the transactions/ do
+  # Make sure that all the movies in the app are visible in the table
+#  expect(page).to have_xpath(".//tr[not(ancestor::thead)]", count: Transaction.count)
+#end
 
 ### Utility Steps Just for this assignment.
 

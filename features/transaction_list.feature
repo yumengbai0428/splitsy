@@ -18,5 +18,19 @@ Background: transactions have been added to database
   And I am on the Splitsy home page
   # Then 7 seed transactions should exist
 
-Scenario: I visit the transactions page
-  Then I should see all transactions
+Scenario: New user must be able to sign up
+When I am on the welcome page
+  Then I should be able to sign up
+
+Scenario: Existing user must be able to login
+When I login as aladdin
+  Then I am on the Splitsy home page
+
+Scenario: Transactions of logged in user must be displayed
+When I login as aladdin
+ And I am on the Splitsy home page
+   Then I should see all transactions of aladdin@gmail.com
+
+
+
+  
