@@ -4,16 +4,22 @@ RSpec.describe Transaction, type: :model do
   describe "all_transactions_for_user" do
 
     User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-    Transaction.create(payer_email: 'a@g',payee_ email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5)
-    Transaction.create(payer_email: 'a@g',payee_ email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
-    Transaction.create(payer_email: 'b@g',payee_ email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
-    Transaction.create(payer_email: 'd@g',payee_ email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
+    Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5)
+    Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
+    Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
+    Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
     
     context 'user exists' do
       it 'finds the user with the email' do
-        expect(Transaction.find_user('a').pluck("description")).to include('d1')
-        expect(Transaction.find_user('a').pluck("description")).to include('d2')
-        expect(Transaction.find_user('a').pluck("description")).to include('d4')
+        temp = Transaction.all_transactions_for_user('a')
+        descriptions = []
+        temp.each do |t|
+          descriptions.push(t["description"])
+        end
+        expect(descriptions).to include('d1')
+        expect(descriptions).to include('d2')
+        expect(descriptions).to include('d4')
+        expect(descriptions).to_not include('d3')
       end
     end
 
