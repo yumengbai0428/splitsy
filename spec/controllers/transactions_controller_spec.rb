@@ -42,7 +42,7 @@ describe TransactionsController, :type => :controller do
         transaction = {payer_email: 'c@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 20, percentage: 0.25}
         post :create, transaction: transaction
       
-        expect(flash[:notice]).to eq("#{transaction.id} was successfully created.")
+        expect(flash[:notice]).to eq("Transaction was successfully created.")
         expect(response).to redirect_to(transactions_path)
         expect(@transactions.count).to eq(transactions_count + 1)
       end

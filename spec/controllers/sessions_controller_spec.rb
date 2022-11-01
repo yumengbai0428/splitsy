@@ -13,19 +13,19 @@ describe SessionsController, :type => :controller do
   
         it "valid username and password" do
             post :create, user_email: 'a@g', password: 'p1'
-            expect(session[:user_email]).to be('a@g')
+            expect(session[:user_email]).to eq('a@g')
             expect(response).to redirect_to(transactions_path)
         end
 
         it "valid username and wrong password" do
             post :create, user_email: 'a@g', password: 'p2'
-            expect(flash[:notice]).to be("Invalid session, please login.")
+            expect(flash[:notice]).to eq("Invalid session, please login.")
             expect(response).to redirect_to(login_path)
         end
 
         it "invalid username" do
             post :create, user_email: 'b@g', password: 'p1'
-            expect(flash[:notice]).to be("Invalid session, please login.")
+            expect(flash[:notice]).to eq("Invalid session, please login.")
             expect(response).to redirect_to(login_path)
         end
   

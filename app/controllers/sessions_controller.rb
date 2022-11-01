@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
     def create
         @user = User.find_by(email: params[:user_email])
-        if !!@user && @user.authenticate(params[:password])
+        if !!@user && (@user.password == params[:password])
             session[:user_email] = @user.email
             redirect_to transactions_path
         else

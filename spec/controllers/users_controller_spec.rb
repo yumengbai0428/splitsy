@@ -40,8 +40,8 @@ describe UsersController, :type => :controller do
             end
 
             it "create new user" do
-                get :create, uuser_params: {"name": 'c', "email": 'c@g', "password": 'p3', "default_currency": '$'}
-                expect(session[:user_email]).to eq("c@g")
+                get :create, user_params: {name: 'c', email: 'c@g', password: 'p3', default_currency: '$'}
+                expect(session[:user_email]).to eq('c@g')
                 expect(response).to redirect_to(transactions_path)
               end
         end

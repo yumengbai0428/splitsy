@@ -8,7 +8,11 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.new(params["user_params"])
+        print("---")
+        print(params["user_params"])
+        print("---")
+        @user = User.create!(params["user_params"])
+        
         if @user.save
             session[:user_email] = @user.email
             redirect_to transactions_path
@@ -36,6 +40,7 @@ class UsersController < ApplicationController
         flash[:notice] = "User login was invalid."
         redirect_to welcome_path
     end
+
 
     private
     def user_params
