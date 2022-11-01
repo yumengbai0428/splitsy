@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 
     def validate
         user = User.find_user(params["user"]["email"])
-        if user != nil
+        if user.size() != 0
             if user[0].password == params["user"]["password"]
                 session[:user_email] = params["user"]["email"]
                 redirect_to transactions_path
