@@ -8,10 +8,7 @@ class UsersController < ApplicationController
     end
 
     def create
-        print("---")
-        print(params["user_params"])
-        print("---")
-        @user = User.create!(params["user_params"])
+        @user = User.create!({name: params["user_params"]["name"], email: params["user_params"]["email"], password: params["user_params"]["password"], default_currency: params["user_params"]["default_currency"]})
         
         if @user.save
             session[:user_email] = @user.email
@@ -44,7 +41,7 @@ class UsersController < ApplicationController
 
     private
     def user_params
-        params.require(:user).permit(:name, :email, :password)
+        params.require(:user).permit(:name, :email, :password, :default_currency)
     end
 
 end
