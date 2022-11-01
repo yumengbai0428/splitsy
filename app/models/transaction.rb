@@ -1,9 +1,7 @@
 class Transaction < ActiveRecord::Base
-    def self.all_transactions_for_user user_name
-        # incomplete function
-        email = User.where(name: user_name).distinct.pluck(:email)[0]
-        payer_trans = Transaction.where(payer_email: email)
-        payee_trans = Transaction.where(payee_email: email)
+    def self.all_transactions_for_user(email)
+        payer_trans = Transaction.where('payer_email = ?', email)
+        payee_trans = Transaction.where('payee_email = ?', email)
         all_trans = []
         payer_trans.each do |t|
             all_trans.push(t)
