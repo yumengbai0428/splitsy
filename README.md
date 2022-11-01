@@ -19,4 +19,4 @@ Heroku link: https://gentle-springs-10839.herokuapp.com/
 5. Push changes to your fork `git push -f origin main`, most likely you might need the force because of rebasing
 6. Then make a pull request to the main repo 
 7. If there is a new migration file, run `bin/rake db:migrate` again
-8. If you have a migration error because of key constraints, delete the exisitng .sqlite3 files on your local under /db
+8. To run cucumber tests, run 'bundle exec cucumber'

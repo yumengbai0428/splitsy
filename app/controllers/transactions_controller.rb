@@ -32,7 +32,7 @@ class TransactionsController < ApplicationController
 
     def create
         @transaction = Transaction.create!(transaction_params)
-        flash[:notice] = "#{@transaction.id} was successfully created."
+        flash[:notice] = "Transaction was successfully created."
         redirect_to transactions_path
     end
 

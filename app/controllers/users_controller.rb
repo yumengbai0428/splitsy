@@ -8,7 +8,8 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.new(user_params)
+        @user = User.create!({name: params["user_params"]["name"], email: params["user_params"]["email"], password: params["user_params"]["password"], default_currency: params["user_params"]["default_currency"]})
+        
         if @user.save
             session[:user_email] = @user.email
             redirect_to transactions_path
@@ -26,7 +27,7 @@ class UsersController < ApplicationController
 
     def validate
         user = User.find_user(params["user"]["email"])
-        if user != nil
+        if user.size() != 0
             if user[0].password == params["user"]["password"]
                 session[:user_email] = params["user"]["email"]
                 redirect_to transactions_path
@@ -37,9 +38,10 @@ class UsersController < ApplicationController
         redirect_to welcome_path
     end
 
+
     private
     def user_params
-        params.require(:user).permit(:name, :email, :password)
+        params.require(:user).permit(:name, :email, :password, :default_currency)
     end
 
 end

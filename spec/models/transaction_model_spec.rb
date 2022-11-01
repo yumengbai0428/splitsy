@@ -11,7 +11,7 @@ RSpec.describe Transaction, type: :model do
     
     context 'user exists' do
       it 'finds the user with the email' do
-        temp = Transaction.all_transactions_for_user('a')
+        temp = Transaction.all_transactions_for_user('a@g')
         descriptions = []
         temp.each do |t|
           descriptions.push(t["description"])
