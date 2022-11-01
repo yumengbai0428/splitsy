@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.new(user_params)
+        @user = User.new(params["user_params"])
         if @user.save
             session[:user_email] = @user.email
             redirect_to transactions_path
