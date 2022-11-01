@@ -16,7 +16,7 @@ Background: transactions have been added to database
   | emma@gmail.com     | iris@gmail.com    | Rent3                 | US dollar      | 2000   | 0.33       |
 
   And I am on the Splitsy home page
-  Then 7 seed transactions should exist
+  # Then 7 seed transactions should exist
 
 Scenario: I visit the transactions page
-  Then I should see all the transactions
+  Then I should see all transactions
