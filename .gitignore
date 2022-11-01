@@ -67,3 +67,4 @@ yarn-debug.log*
 !/storage/.keep
 
 .ruby-version
+.DS_Store
