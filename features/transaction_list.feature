@@ -20,11 +20,16 @@ Background: transactions have been added to database
 
 Scenario: New user must be able to sign up
 When I am on the welcome page
-  Then I should be able to sign up
+  Then I should be able to sign up as 'apple' with 'apple@gmail.com'
 
 Scenario: Existing user must be able to login
 When I login as aladdin
   Then I am on the Splitsy home page
+
+Scenario: Existing user cannot sign up again
+When I am on the welcome page
+  Then I should not be able to sign up as 'aladdin' with 'aladdin@gmail.com' 
+  Then I am on the welcome page
 
 Scenario: Transactions of logged in user must be displayed
 When I login as aladdin
@@ -32,11 +37,23 @@ When I login as aladdin
    Then I should see all transactions of aladdin@gmail.com
 
 Scenario: Adding and deleting transactions for a user
-   Given I am logged in as aladdin@gmail.com with password
-     Then I should be able to add and delete a transaction from aladdin@gmail.com to emma@gmail.com
+When I login as aladdin
+  Then I am on the Splitsy home page
+  Then I follow "Add new transaction"
+  Then I create a transaction with details 'aladdin@gmail.com', 'aladdin@gmail.com', 'test', 'US dollar', '34', '50' 
+  Then I am on the Splitsy home page
 
+Scenario: I am logged in and I log out
+When I login as aladdin
+  Then I am on the Splitsy home page
+  Then I follow "Logout"
+  Then I am on the welcome page
 
-
-
-
-  
+Scenario: I want to edit an existing transaction
+When I login as aladdin
+  Then I am on the Splitsy home page
+  Then I click on the first transaction learn more about
+  Then I follow "Edit"
+  Then I edit the field "Amount" with "70"
+  Then I press "Update Transaction Info"
+  Then I am on the Splitsy home page

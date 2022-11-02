@@ -90,20 +90,55 @@ When /I login as (.*)/ do |user_name|
   fill_in "Email", :with => @user.email
   fill_in "Password", :with => @user.password
   click_button "Login"
+  expect page.body.include? "All Transactions"
 end
 
-Then /I should be able to sign up/ do
+Then /I should be able to sign up as '(.*)' with '(.*)'/ do |name, email|
   # Write code here that turns the phrase above into concrete actions
   click_button "Sign Up"
-
-  email = 'apple@gmail.com'
   password = 'apple'
-  name = 'apple'
 
   fill_in "Name", :with => name
   fill_in "Email", :with => email
   fill_in "Password", :with => password
   click_button "Create User"
+end
+
+Then /I should not be able to sign up as '(.*)' with '(.*)'/ do |name, email|
+  # Write code here that turns the phrase above into concrete actions
+  click_button "Sign Up"
+  password = 'apple'
+
+  @user = User.create!(
+    :name => name,
+    :email => email,
+    :password => password,
+  )
+
+  fill_in "Name", :with => name
+  fill_in "Email", :with => email
+  fill_in "Password", :with => password
+  click_button "Create User"
+  expect page.body.include? "Welcome"
+end
+
+Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage|
+  count = Transaction.all.size()
+  select payer_email, :from => "Payer Email"
+  select payee_email, :from => "Payee Email"
+  fill_in "Description", :with => description
+  select currency, :from => "Currency"
+  fill_in "Percentage split", :with => percentage
+  click_button "Save Changes"
+  expect Transaction.all.size() == count + 1
+end
+
+Then /I click on the first transaction learn more about/ do
+  click_link("More about this transaction", match: :first)
+end
+
+Then /I edit the field "(.*)" with "(.*)"/ do |field_name, new_value|
+  fill_in field_name, :with => new_value
 end
 
 #Then /I should see all the transactions/ do
@@ -124,11 +159,3 @@ Then /^debug javascript$/ do
   page.driver.debugger
   1
 end
-
-
-# Then /complete the rest of of this scenario/ do
-#   # This shows you what a basic cucumber scenario looks like.
-#   # You should leave this block inside movie_steps, but replace
-#   # the line in your scenarios with the appropriate steps.
-#   fail "Remove this step from your .feature files"
-# end
