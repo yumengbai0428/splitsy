@@ -1,0 +1,17 @@
+<!--  app/views/users/show.html.erb -->
+<h2>Details about <em><%= @user.email %></em></h2>
+
+<ul id="details">
+<li>
+    Name:
+    <%= @user.name %>
+  </li>
+  <li>
+    Email:
+    <%= @user.email %>
+  </li>
+  <li>
+    Currency:
+    <%= @user.default_currency %>
+  </li>
+</ul>

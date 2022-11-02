@@ -11,7 +11,6 @@ class TransactionsController < ApplicationController
             redirect_to welcome_path
         end
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
-        @users = Transaction.all_user_mails
     end
 
     def destroy
