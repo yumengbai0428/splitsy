@@ -1,15 +1,20 @@
 class TransactionsController < ApplicationController
+    before_action :check_login
     def show
+        check_login
         id = params[:id]
         @transaction = Transaction.find(id)
         @converted_amount = convert_amount
     end
 
-    def index
+    def check_login
         if session[:user_email] == nil
             flash[:notice] = "Invalid session, please login."
             redirect_to welcome_path
         end
+    end
+
+    def index
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
     end
 
@@ -20,7 +25,7 @@ class TransactionsController < ApplicationController
         redirect_to transactions_path
     end
 
-    def new 
+    def new
         @users = Transaction.all_user_mails
     end
 
@@ -44,6 +49,12 @@ class TransactionsController < ApplicationController
 
     def convert_amount
         return @transaction.amount.to_s + " (" + @transaction.currency + ")"
+    end
+
+    def logout
+        session[:user_email] = nil
+        flash[:notice] = "User successfully logged out."
+        redirect_to welcome_path
     end
 
     private

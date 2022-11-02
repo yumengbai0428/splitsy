@@ -8,13 +8,18 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.create!({name: params["user"]["name"], email: params["user"]["email"], password: params["user"]["password"], default_currency: params["user"]["default_currency"]})
-        
-        if @user.save
-            session[:user_email] = @user.email
-            redirect_to transactions_path
-        else
-            render :new
+        begin
+            @user = User.create!({name: params["user"]["name"], email: params["user"]["email"], password: params["user"]["password"], default_currency: params["user"]["default_currency"]})
+            
+            if @user.save
+                session[:user_email] = @user.email
+                redirect_to transactions_path
+            else
+                render :new
+            end
+        rescue ActiveRecord::RecordInvalid => invalid
+            flash[:notice] = "User with email already exists."
+            redirect_to welcome_path
         end
     end
 
