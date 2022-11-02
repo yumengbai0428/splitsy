@@ -31,6 +31,12 @@ When I login as aladdin
  And I am on the Splitsy home page
    Then I should see all transactions of aladdin@gmail.com
 
+Scenario: Adding and deleting transactions for a user
+   Given I am logged in as aladdin@gmail.com with password
+     Then I should be able to add and delete a transaction from aladdin@gmail.com to emma@gmail.com
+
+
+
 
 
   

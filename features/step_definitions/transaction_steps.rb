@@ -52,6 +52,28 @@ Then /I should see all transactions of (.*)/ do |user_email|
   
 end
 
+Given /I am logged in as (.*) with (.*)/ do |email, password|
+  # Write code here that turns the phrase above into concrete actions
+  click_button "Login"
+
+  fill_in "Email", :with => email
+  fill_in "Password", :with => password
+  click_button "Login"
+end
+
+Then /I should be able to add and delete a transaction from (.*) to (.*)/ do |payer_email, payee_email|
+  # Write code here that turns the phrase above into concrete actions
+  new_transaction = Transaction.create!(
+    :payer_email => payer_email, 
+    :payee_email => payee_email, 
+    :description => 'Test transaction', 
+    :currency => 'US dollar', 
+    :amount => 1000, 
+    :percentage => 0.5,
+  )
+  Transaction.destroy(new_transaction.id)
+end
+
 When /I login as (.*)/ do |user_name|
   # Write code here that turns the phrase above into concrete actions
   click_button "Login"
