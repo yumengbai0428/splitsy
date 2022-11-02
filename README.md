@@ -10,6 +10,13 @@ Federico Tondolo - ft2505
 Heroku link: https://gentle-springs-10839.herokuapp.com/
 
 # Instructions to run product:
+1. Set ruby version to 2.6.6 - `rbenv local 2.6.6`
+2. Install dependencies - `bundle install`
+3. Run the DB migrations - `bin/rake db:migrate`
+4. Seed local data in sqlite3 - `bin/rake db:seed`
+5. Start the local instance - `bin/rails server -b 0.0.0.0`
+6. To run cucumber tests - `bundle exec cucumber`
+7. To run rspec tests - `bundle exec rspec`
 
 # Developer notes:
 1. Set the main repo as your upstream `git remote add upstream https://github.com/harshiniwho/splitsy`
