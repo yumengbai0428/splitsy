@@ -9,8 +9,8 @@ class UsersController < ApplicationController
 
     def create
         begin
-            @user = User.create!({name: params["user"]["name"], email: params["user"]["email"], password: params["user"]["password"], default_currency: params["user"]["default_currency"]})
-            
+            #@user = User.create!({name: params["user"]["name"], email: params["user"]["email"], password: params["user"]["password"], default_currency: params["user"]["default_currency"]})
+            @user = User.create!(user_params)
             if @user.save
                 session[:user_email] = @user.email
                 redirect_to transactions_path

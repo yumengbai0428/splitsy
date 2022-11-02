@@ -49,7 +49,6 @@ describe UsersController, :type => :controller do
         context "show" do
           before :each do
             user1 = User.create(id: 1, name: 'a', email: 'a@g', password: 'p1', default_currency: '$')
-            print(User.all)
           end
           it "Assigns a user" do
               get :show, user_email: 'a@g'
@@ -63,10 +62,16 @@ describe UsersController, :type => :controller do
             end
 
             it "create new user" do
-                get :create, user_params: {name: 'c', email: 'c@g', password: 'p3', default_currency: '$'}
+                get :create, user: {name: 'c', email: 'c@g', password: 'p3', default_currency: '$'}
                 expect(session[:user_email]).to eq('c@g')
                 expect(response).to redirect_to(transactions_path)
-              end
+            end
+
+            it "create existing user" do
+              get :create, user: {name: 'a', email: 'a@g', password: 'p3', default_currency: '$'}
+              expect(flash[:notice]).to eq("User with email already exists.")
+              expect(response).to redirect_to(welcome_path)
+            end
         end
 
 

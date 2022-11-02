@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe User,  type: :model do
   describe "find_user" do
-
-    user1 = User.create(id: 1, name: 'a', email: 'a@g', password: 'p1', default_currency: '$')
-    user2 = User.create(id: 2,name: 'b', email: 'b@g', password: 'p2', default_currency: 'Yen')
-    
+    before :each do
+      user1 = User.create(id: 1, name: 'a', email: 'a@g', password: 'p1', default_currency: '$')
+      user2 = User.create(id: 2,name: 'b', email: 'b@g', password: 'p2', default_currency: 'Yen')
+    end
     context 'user exists' do
       it 'finds the user with the email' do
         expect(User.find_user('a@g').size()).to eql(1)
