@@ -89,7 +89,7 @@ class TransactionsController < ApplicationController
 
     def validate_create
         flag = false
-        if transaction_params['payer_email'] != session[:user_email] or transaction_params['payee_email'] != session[:user_email]
+        if transaction_params['payer_email'] != session[:user_email] and transaction_params['payee_email'] != session[:user_email]
             flash[:notice] = "Invalid transaction - payer or payee must be you."
         elsif transaction_params['payer_email'] == transaction_params['payee_email']
             flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
