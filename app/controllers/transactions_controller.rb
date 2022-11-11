@@ -1,3 +1,4 @@
+require 'date'
 class TransactionsController < ApplicationController
     before_action :check_login
     def show
@@ -73,9 +74,29 @@ class TransactionsController < ApplicationController
         @transaction = Transaction.find params[:id]
     end
 
+    def validate_create
+        flag = false
+        if transaction_params['payer_email'] != session[:user_email] or transaction_params['payee_email'] != session[:user_email]
+            flash[:notice] = "Invalid transaction - payer or payee must be you."
+        elsif transaction_params['payer_email'] == transaction_params['payee_email']
+            flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
+        elsif Date.iso8601(transaction_params['timestamp']) > Date.today
+            flash[:notice] = "Invalid transaction - date cannot be in the future."
+        else
+            flag = true
+        end
+        return flag
+    end
+
     def create
-        @transaction = Transaction.create!(transaction_params)
-        flash[:notice] = "Transaction was successfully created."
+        if validate_create
+            begin
+                @transaction = Transaction.create!(transaction_params)
+                flash[:notice] = "Transaction was successfully created."
+            rescue ActiveRecord::RecordInvalid => invalid
+                flash[:notice] = "Invalid transaction amount/percentage."
+            end
+        end
         redirect_to transactions_path
     end
 

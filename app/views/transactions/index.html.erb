@@ -14,9 +14,6 @@
       <th>Friend</th>
       <th>Balances?</th>
       <th>Amount</th>
-      <th>Currency</th>
-      <th>Date</th>
-      <th>More info</th>
     </tr>
   </thead>
   <tbody>
@@ -35,19 +32,6 @@
           <% end %>
         </td>
         <td>
-          <%= transaction.description %>
-        </td>
-        <td>
-          <%= transaction.amount %>
-        </td>
-        <td>
-          <%= transaction.currency %>
-        </td>
-        <td>
-          <%= transaction.timestamp.to_a[3, 3].join("/") %>
-        </td>
-        <td>
-          <%= link_to "More about this transaction", transaction_path(transaction) %>
           <%= person['amount_due'].abs() %>
          </td>
       </tr>
