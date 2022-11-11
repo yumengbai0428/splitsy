@@ -23,7 +23,6 @@ RSpec.describe Transaction, type: :model do
         expect(descriptions).to_not include('d3')
       end
     end
-
   end
   describe "all_user_mails" do
     before :each do

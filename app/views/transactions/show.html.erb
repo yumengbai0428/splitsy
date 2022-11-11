@@ -15,8 +15,8 @@
     <%= @converted_amount %>
   </li>
   <li>
-    Time:
-    <%= @transaction.timestamp %>
+    Date:
+    <%= @transaction.timestamp.to_a[3, 3].join("/") %>
   </li>
 </ul>
 
