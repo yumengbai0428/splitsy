@@ -8,18 +8,22 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.create!({name: params["user_params"]["name"], email: params["user_params"]["email"], password: params["user_params"]["password"], default_currency: params["user_params"]["default_currency"]})
-        
-        if @user.save
-            session[:user_email] = @user.email
-            redirect_to transactions_path
-        else
-            render :new
+        begin
+            @user = User.create!(user_params)
+            if @user.save
+                session[:user_email] = @user.email
+                redirect_to transactions_path
+            else
+                render :new
+            end
+        rescue ActiveRecord::RecordInvalid => invalid
+            flash[:notice] = "User with email already exists."
+            redirect_to welcome_path
         end
     end
 
     def show
-        @user = User.find(params[:user_email])
+        @user = User.find_user(params[:user_email])[0]
     end
 
     def login
