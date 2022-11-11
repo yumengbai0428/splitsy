@@ -1,0 +1,12 @@
+<h2>Edit Profile</h2>
+<%= form_tag user_path(@user), :method => :put do %>
+  <%= label :user, :email, 'Email', :class => 'col-form-label' %>
+  <%= text_field :user, 'email', :class => 'form-control',:readonly => true %>
+  <%= label :user, :name, 'Name', :class => 'col-form-label' %>
+  <%= text_field :user, 'name', :class => 'form-control', :readonly => true %>
+  <%= label :user, :default_currency, 'Default Currency', :class => 'col-form-label'  %>
+  <%= select :user, :default_currency, ['US dollar', 'Rupee', 'Euro', 'Yen', 'Yuan', 'Canadian dollar'], {}, {:class => 'form-control col-2'} %>
+  <br/>
+  <%= submit_tag 'Update Your Info', :class => 'btn btn-info' %>
+  <%= link_to 'Cancel', transactions_path, :class => 'btn btn-secondary' %>
+<% end %>

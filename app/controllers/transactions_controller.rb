@@ -14,16 +14,19 @@ class TransactionsController < ApplicationController
         end
     end
 
+    # def transform
+    #     money_map = {}
+    #     @transactions.each 
+    # end
+
     def index
-        if params[:tag].nil? && params[:start_time].nil? 
-            @transactions = Transaction.all_transactions_for_user(session[:user_email])
-        elsif params[:tag].nil?
-            @transactions = Transaction.find_tansactions_during_time(start_time, end_time)
-        elsif params[:start_time].nil?
-            @transactions = Transaction.find_tansactions_by_tag(tag)
-        else
-            @transactions =
-        end
+        @user_email = session[:user_email]
+        @transactions = Transaction.all_transactions_for_user(session[:user_email])
+    end
+
+    def list
+        @user_email = session[:user_email]
+        @transactions = Transaction.all_transactions_for_user(session[:user_email])
     end
 
     def destroy

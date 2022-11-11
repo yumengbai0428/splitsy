@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   post 'welcome', to: 'sessions#welcome'
   post 'create', to: 'sessions#create'
   get 'logout', to: 'transactions#logout'
+  get 'all-transactions', to: 'transactions#list'
   # Example resource route with options:
   #   resources :products do
   #     member do
