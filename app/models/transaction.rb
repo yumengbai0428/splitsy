@@ -1,4 +1,6 @@
 class Transaction < ActiveRecord::Base
+    validates :amount, numericality: { greater_than: 0 }
+    validates :percentage, numericality: { greater_than: 0 }
     def self.all_transactions_for_user(email)
         payer_trans = Transaction.where('payer_email = ?', email)
         payee_trans = Transaction.where('payee_email = ?', email)

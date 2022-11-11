@@ -1,7 +1,7 @@
+require 'date'
 class TransactionsController < ApplicationController
     before_action :check_login
     def show
-        check_login
         id = params[:id]
         @transaction = Transaction.find(id)
         @converted_amount = convert_amount
@@ -14,14 +14,43 @@ class TransactionsController < ApplicationController
         end
     end
 
-    # def transform
-    #     money_map = {}
-    #     @transactions.each 
-    # end
+    def transform
+        money_map = {}
+        @total_dues = 0
+        @transactions.each do |transaction|
+            payer = transaction['payer_email']
+            payee = transaction['payee_email']
+            is_payer = payer == session[:user_email]
+            if is_payer
+                @total_dues -= transaction['amount']
+                if not money_map.key?(payee)
+                    money_map[payee] = transaction['amount']
+                else 
+                    money_map[payee] += transaction['amount']
+                end
+            else 
+                @total_dues += transaction['amount']
+                if not money_map.key?(payee)
+                    money_map[payee] = - transaction['amount']
+                else 
+                    money_map[payee] += - transaction['amount']
+                end
+            end
+        end
+        persons = []
+        money_map.each do |key, value|
+            pmap = {}
+            pmap['email'] = key
+            pmap['amount_due'] = value
+            persons.push(pmap)
+        end
+        return persons
+    end
 
     def index
         @user_email = session[:user_email]
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
+        @persons = transform
     end
 
     def list
@@ -53,9 +82,29 @@ class TransactionsController < ApplicationController
         @transaction = Transaction.find params[:id]
     end
 
+    def validate_create
+        flag = false
+        if transaction_params['payer_email'] != session[:user_email] or transaction_params['payee_email'] != session[:user_email]
+            flash[:notice] = "Invalid transaction - payer or payee must be you."
+        elsif transaction_params['payer_email'] == transaction_params['payee_email']
+            flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
+        elsif Date.iso8601(transaction_params['timestamp']) > Date.today
+            flash[:notice] = "Invalid transaction - date cannot be in the future."
+        else
+            flag = true
+        end
+        return flag
+    end
+
     def create
-        @transaction = Transaction.create!(transaction_params)
-        flash[:notice] = "Transaction was successfully created."
+        if validate_create
+            begin
+                @transaction = Transaction.create!(transaction_params)
+                flash[:notice] = "Transaction was successfully created."
+            rescue ActiveRecord::RecordInvalid => invalid
+                flash[:notice] = "Invalid transaction amount/percentage."
+            end
+        end
         redirect_to transactions_path
     end
 
@@ -80,7 +129,7 @@ class TransactionsController < ApplicationController
     # Making "internal" methods private is not required, but is a common practice.
     # This helps make clear which methods respond to requests, and which ones do not.
     def transaction_params
-        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage)
+        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp)
     end
 end
 

@@ -31,6 +31,7 @@
       <th>Description</th>
       <th>Amount</th>
       <th>Currency</th>
+      <th>Date</th>
       <th>More info</th>
     </tr>
   </thead>
@@ -53,6 +54,9 @@
           <%= transaction.currency %>
         </td>
         <td>
+          <%= transaction.timestamp.to_a[3, 3].join("/") %>
+        </td>
+        <td>
           <%= link_to "More about this transaction", transaction_path(transaction) %>
         </td>
       </tr>
@@ -61,3 +65,4 @@
 </table>
 <%= link_to 'Add new transaction', new_transaction_path, :class => 'btn btn-info' %>
 <%= link_to 'Logout', logout_path, :class => 'btn btn-info' %>
+<%= link_to 'Back to transaction list', transactions_path, :class => 'btn btn-info' %>

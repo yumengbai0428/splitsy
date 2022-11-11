@@ -9,10 +9,10 @@ describe TransactionsController, :type => :controller do
     context "Showing a transaction" do
       before :each do
         User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-        Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5)
-        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
-        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
-        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
+        Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5, timestamp:Time.new)
+        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp:Time.new)
+        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp:Time.new)
+        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, timestamp:Time.new)
         @transactions = Transaction.all
       end
 
@@ -61,7 +61,6 @@ describe TransactionsController, :type => :controller do
 
       it "Should be edit a transaction" do
         get :edit, {id: @transactions.take.id}, {user_email: 'a@g'}
-      
         expect(assigns(:transaction)).to eq(@transactions.take)
       end
 
@@ -106,10 +105,10 @@ describe TransactionsController, :type => :controller do
     context "Index" do
       before :each do
         User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-        Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5)
-        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
-        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
-        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
+        Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5, timestamp:Time.new)
+        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp:Time.new)
+        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp:Time.new)
+        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, timestamp:Time.new)
         @transactions = Transaction.all
       end
       let(:pulp_fiction) { Movie.create!(title: 'Pulp Fiction', rating:'R', director: 'Quentin Tarantino' )}
