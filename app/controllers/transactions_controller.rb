@@ -14,7 +14,17 @@ class TransactionsController < ApplicationController
         end
     end
 
+    # def transform
+    #     money_map = {}
+    #     @transactions.each 
+    # end
+
     def index
+        @user_email = session[:user_email]
+        @transactions = Transaction.all_transactions_for_user(session[:user_email])
+    end
+
+    def list
         @user_email = session[:user_email]
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
     end
