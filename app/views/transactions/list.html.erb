@@ -1,6 +1,28 @@
 <!--  This file is app/views/transactions/index.html.erb -->
 <%= link_to 'My Profile', user_path(@user_email), :class => 'btn btn-info' %>
 <h2>All Transactions</h2> 
+<%= form_for :filter_form, url: all_transactions_path do |f| %>
+  <div class="form-group">
+      <%= f.label :tag %>
+      <%= f.text_field :tag %>
+  </div>
+
+  <div class="form-group">
+      <%= f.label :start_date %>
+      <%= f.date_field :start_date %>
+  </div>
+
+  <div class="form-group">
+      <%= f.label :end_date %>
+      <%= f.date_field :end_date %>
+  </div>
+
+  <div class="form-group">
+      <%= submit_tag 'Search' %>                
+  </div>
+  <% end %>
+</div>
+
 <table class="table table-striped col-md-12" id="transactions">
   <thead>
     <tr>
