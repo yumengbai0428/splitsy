@@ -15,7 +15,15 @@ class TransactionsController < ApplicationController
     end
 
     def index
-        @transactions = Transaction.all_transactions_for_user(session[:user_email])
+        if params[:tag].nil? && params[:start_time].nil? 
+            @transactions = Transaction.all_transactions_for_user(session[:user_email])
+        elsif params[:tag].nil?
+            @transactions = Transaction.find_tansactions_during_time(start_time, end_time)
+        elsif params[:start_time].nil?
+            @transactions = Transaction.find_tansactions_by_tag(tag)
+        else
+            @transactions =
+        end
     end
 
     def destroy
