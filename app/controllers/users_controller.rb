@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-    before_action :check_login
-
     def check_login
         if session[:user_email] == nil
             flash[:notice] = "Invalid session, please login."
@@ -32,10 +30,12 @@ class UsersController < ApplicationController
     end
 
     def show
+        check_login
         @user = User.find_user(session[:user_email])[0]
     end
 
     def edit
+        check_login
         @user = User.find_user(session[:user_email])[0]
     end
 
