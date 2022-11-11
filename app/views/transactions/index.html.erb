@@ -1,6 +1,6 @@
 <!--  This file is app/views/transactions/index.html.erb -->
-<h2>All Transactions</h2>
-
+<%= link_to 'My Profile', user_path(@user_email), :class => 'btn btn-info' %>
+<h2>All Transactions</h2> 
 <table class="table table-striped col-md-12" id="transactions">
   <thead>
     <tr>

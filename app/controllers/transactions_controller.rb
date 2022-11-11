@@ -15,6 +15,7 @@ class TransactionsController < ApplicationController
     end
 
     def index
+        @user_email = session[:user_email]
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
     end
 

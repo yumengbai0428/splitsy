@@ -1,4 +1,13 @@
 class UsersController < ApplicationController
+    before_action :check_login
+
+    def check_login
+        if session[:user_email] == nil
+            flash[:notice] = "Invalid session, please login."
+            redirect_to welcome_path
+        end
+    end
+
     def index
         @users = User.all
     end
@@ -23,7 +32,18 @@ class UsersController < ApplicationController
     end
 
     def show
-        @user = User.find_user(params[:user_email])[0]
+        @user = User.find_user(session[:user_email])[0]
+    end
+
+    def edit
+        @user = User.find_user(session[:user_email])[0]
+    end
+
+    def update
+        @user = User.find params[:id]
+        @user.update_attributes!(user_params)
+        flash[:notice] = "#{@user.email} was successfully updated."
+        redirect_to transactions_path
     end
 
     def login
