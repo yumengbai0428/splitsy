@@ -72,7 +72,7 @@ class TransactionsController < ApplicationController
     # Making "internal" methods private is not required, but is a common practice.
     # This helps make clear which methods respond to requests, and which ones do not.
     def transaction_params
-        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage)
+        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp)
     end
 end
 

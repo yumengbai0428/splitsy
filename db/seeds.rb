@@ -18,13 +18,13 @@ users = [{:name => 'Aladdin', :email => 'aladdin@gmail.com', :password => 'passw
 		{:name => 'Jack', :email => 'jack@gmail.com', :password => 'password', :default_currency => 'US dollar'},
   	 ]
 
-transactions = [{:payer_email => "aladdin@gmail.com", :payee_email => "bob@gmail.com", :description => "Thai food for lunch", :currency => "US dollar", :amount => 50, :percentage => 0.25},
-		{:payer_email => "aladdin@gmail.com", :payee_email => "bob@gmail.com", :description => "Concert", :currency => "US dollar", :amount => 100, :percentage => 0.5},
-		{:payer_email => "aladdin@gmail.com", :payee_email => "carla@gmail.com", :description => "Bar", :currency => "US dollar", :amount => 20, :percentage => 0.75},
-		{:payer_email=> "david@gmail.com", :payee_email => "aladdin@gmail.com", :description => "School supplies", :currency => "US dollar", :amount => 20, :percentage => 1},
-		{:payer_email => "emma@gmail.com", :payee_email => "aladdin@gmail.com", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33},
-		{:payer_email => "emma@gmail.com", :payee_email => "jack@gmail.com", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33},
-		{:payer_email => "emma@gmail.com", :payee_email => "iris@gmail.com", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33},
+transactions = [{:payer_email => "aladdin@gmail.com", :payee_email => "bob@gmail.com", :description => "Thai food for lunch", :currency => "US dollar", :amount => 50, :percentage => 0.25, :timestamp => Time.new},
+		{:payer_email => "aladdin@gmail.com", :payee_email => "bob@gmail.com", :description => "Concert", :currency => "US dollar", :amount => 100, :percentage => 0.5, :timestamp => Time.new},
+		{:payer_email => "aladdin@gmail.com", :payee_email => "carla@gmail.com", :description => "Bar", :currency => "US dollar", :amount => 20, :percentage => 0.75, :timestamp => Time.new},
+		{:payer_email=> "david@gmail.com", :payee_email => "aladdin@gmail.com", :description => "School supplies", :currency => "US dollar", :amount => 20, :percentage => 1, :timestamp => Time.new},
+		{:payer_email => "emma@gmail.com", :payee_email => "aladdin@gmail.com", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33, :timestamp => Time.new},
+		{:payer_email => "emma@gmail.com", :payee_email => "jack@gmail.com", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33, :timestamp => Time.new},
+		{:payer_email => "emma@gmail.com", :payee_email => "iris@gmail.com", :description => "Rent", :currency => "US dollar", :amount => 2000, :percentage => 0.33, :timestamp => Time.new},
 	]
 
 users.each do |user|

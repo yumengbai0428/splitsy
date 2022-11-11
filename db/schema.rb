@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221030214105) do
+ActiveRecord::Schema.define(version: 20221111023433) do
 
   create_table "transactions", force: :cascade do |t|
-    t.string "payer_email"
-    t.string "payee_email"
-    t.text   "description"
-    t.string "currency"
-    t.float  "amount"
-    t.float  "percentage"
+    t.string   "payer_email"
+    t.string   "payee_email"
+    t.text     "description"
+    t.string   "currency"
+    t.float    "amount"
+    t.float    "percentage"
+    t.datetime "timestamp"
   end
 
   create_table "users", force: :cascade do |t|

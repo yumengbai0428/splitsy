@@ -9,6 +9,7 @@
       <th>Description</th>
       <th>Amount</th>
       <th>Currency</th>
+      <th>Time</th>
       <th>More info</th>
     </tr>
   </thead>
@@ -29,6 +30,9 @@
         </td>
         <td>
           <%= transaction.currency %>
+        </td>
+        <td>
+          <%= transaction.timestamp %>
         </td>
         <td>
           <%= link_to "More about this transaction", transaction_path(transaction) %>

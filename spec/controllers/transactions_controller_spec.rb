@@ -61,7 +61,6 @@ describe TransactionsController, :type => :controller do
 
       it "Should be edit a transaction" do
         get :edit, {id: @transactions.take.id}, {user_email: 'a@g'}
-      
         expect(assigns(:transaction)).to eq(@transactions.take)
       end
 
