@@ -7,25 +7,37 @@ describe UsersController, :type => :controller do
        
         context "validate a user" do
           before :each do
-            user1 = User.create(id: 1, name: 'a', email: 'a@g', password: 'p1', default_currency: '$')
-            user2 = User.create(id: 2,name: 'b', email: 'b@g', password: 'p2', default_currency: 'Yen')
+            user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
+            user2 = User.create(id: 2,name: 'b', email: 'b@columbia.edu', password: 'p2', default_currency: 'Yen')
           end
     
           it "user not exist" do
-            get :validate, user: {"email": "c@g", "password": "p1"}
+            get :validate, user: {"email": "c@columbia.edu", "password": "p1"}
             expect(flash[:notice]).to eq("User login was invalid.")
             expect(response).to redirect_to('/welcome')
           end
 
+          it "user has invalid email domain" do
+            get :create, user: {"name": "test", "email":"c@gmail.com", "password": "p1"}
+            expect(flash[:notice]).to eq("Invalid credentials.")
+            expect(response).to redirect_to('/welcome')
+          end
+
+          it "user has invalid name and password" do
+            get :create, user: {"name": "", "email":"c@gmail.com", "password": ""}
+            expect(flash[:notice]).to eq("Invalid credentials.")
+            expect(response).to redirect_to('/welcome')
+          end
+
           it "user exists and correct password" do
-            get :validate, user: {"email": "a@g", "password": "p1"}
+            get :validate, user: {"email": "a@columbia.edu", "password": "p1"}
           
-            expect(session[:user_email]).to eq("a@g")
+            expect(session[:user_email]).to eq("a@columbia.edu")
             expect(response).to redirect_to(transactions_path)
           end
 
           it "user exists but incorrect password" do
-            get :validate, user: {"email": "a@g", "password": "p2"}
+            get :validate, user: {"email": "a@columbia.edu", "password": "p2"}
           
             expect(flash[:notice]).to eq("User login was invalid.")
             expect(response).to redirect_to('/welcome')
@@ -48,7 +60,7 @@ describe UsersController, :type => :controller do
 
         context "show" do
           before :each do
-            user1 = User.create(id: 1, name: 'a', email: 'a@g', password: 'p1', default_currency: '$')
+            user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
           end
           it "Assigns a user" do
               get :show, {user_email: 'a@g'}, {user_email: 'a@g'}
@@ -57,18 +69,18 @@ describe UsersController, :type => :controller do
        end
         context "create a user" do
             before :each do
-              user1 = User.create(id: 1, name: 'a', email: 'a@g', password: 'p1', default_currency: '$')
-              user2 = User.create(id: 2,name: 'b', email: 'b@g', password: 'p2', default_currency: 'Yen')
+              user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
+              user2 = User.create(id: 2,name: 'b', email: 'b@columbia.edu', password: 'p2', default_currency: 'Yen')
             end
 
             it "create new user" do
-                get :create, user: {name: 'c', email: 'c@g', password: 'p3', default_currency: '$'}
-                expect(session[:user_email]).to eq('c@g')
+                get :create, user: {name: 'c', email: 'c@columbia.edu', password: 'p3', default_currency: '$'}
+                expect(session[:user_email]).to eq('c@columbia.edu')
                 expect(response).to redirect_to(transactions_path)
             end
 
             it "create existing user" do
-              get :create, user: {name: 'a', email: 'a@g', password: 'p3', default_currency: '$'}
+              get :create, user: {name: 'a', email: 'a@columbia.edu', password: 'p3', default_currency: '$'}
               expect(flash[:notice]).to eq("User with email already exists.")
               expect(response).to redirect_to(welcome_path)
             end

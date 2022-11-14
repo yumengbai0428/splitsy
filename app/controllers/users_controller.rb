@@ -25,8 +25,6 @@ class UsersController < ApplicationController
             if @user.save
                 session[:user_email] = @user.email
                 redirect_to transactions_path
-            else
-                render :new
             end
         rescue ActiveRecord::RecordInvalid => invalid
             flash[:notice] = "User with email already exists."
@@ -65,6 +63,9 @@ class UsersController < ApplicationController
                 session[:user_email] = params["user"]["email"]
                 redirect_to transactions_path
                 return
+            else
+                flash[:notice] = "User login was invalid."
+                redirect_to welcome_path
             end
         end
     end

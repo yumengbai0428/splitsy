@@ -6,16 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-users = [{:name => 'Aladdin', :email => 'aladdin@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Bob', :email => 'bob@gmail', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Carla', :email => 'carla@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'David', :email => 'david@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Emma', :email => 'emma@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Frank', :email => 'frank@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Greg', :email => 'greg@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Howard', :email => 'howard@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Iris', :email => 'iris@gmail.com', :password => 'password', :default_currency => 'US dollar'},
-		{:name => 'Jack', :email => 'jack@gmail.com', :password => 'password', :default_currency => 'US dollar'},
+users = [{:name => 'Aladdin', :email => 'aladdin@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Bob', :email => 'bob@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Carla', :email => 'carla@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'David', :email => 'david@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Emma', :email => 'emma@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Frank', :email => 'frank@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Greg', :email => 'greg@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Howard', :email => 'howard@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Iris', :email => 'iris@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
+		{:name => 'Jack', :email => 'jack@columbia.edu', :password => 'password', :default_currency => 'US dollar'},
   	 ]
 
 transactions = [{:payer_email => "aladdin@gmail.com", :payee_email => "bob@gmail.com", :description => "Thai food for lunch", :currency => "US dollar", :amount => 50, :percentage => 0.25, :timestamp => Time.new},
