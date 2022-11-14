@@ -55,11 +55,12 @@ class TransactionsController < ApplicationController
 
     def list
         @user_email = session[:user_email]
-        if params["filter_form"].nil? || params["filter_form"]["tag"].nil? &&  params["filter_form"]["start_time"].nil? 
+        # todo: if only input start_time or end_time
+        if params["filter_form"].nil? || ((params["filter_form"]["tag"].nil? ||params["filter_form"]["tag"].blank?) &&  (params["filter_form"]["start_time"].nil? || params["filter_form"]["start_time"].blank?)) 
             @transactions = Transaction.all_transactions_for_user(session[:user_email])
-        elsif params["filter_form"]["tag"].nil?
+        elsif params["filter_form"]["tag"].nil? or params["filter_form"]["tag"].blank?
             @transactions = Transaction.find_tansactions_during_time(session[:user_email], params["filter_form"]["start_time"], params["filter_form"]["end_time"])
-        elsif params["filter_form"]["start_time"].nil?
+        elsif params["filter_form"]["start_time"].nil? or params["filter_form"]["start_time"].blank?
             @transactions = Transaction.find_tansactions_by_tag(session[:user_email],  params["filter_form"]["tag"])
         else
             @transactions = Transaction.find_tansactions_tag_time(session[:email],  params["filter_form"]["tag"], params["filter_form"]["start_time"], params["filter_form"]["end_time"])
@@ -84,7 +85,13 @@ class TransactionsController < ApplicationController
 
     def validate_create
         flag = false
-        if transaction_params['payer_email'] != session[:user_email] or transaction_params['payee_email'] != session[:user_email]
+        puts "--- current user---"
+        puts session[:user_email]
+        puts "---  payer email---"
+        puts transaction_params['payer_email']
+        puts "---  payee email---"
+        puts transaction_params['payee_email']
+        if transaction_params['payer_email'] != session[:user_email] and transaction_params['payee_email'] != session[:user_email]
             flash[:notice] = "Invalid transaction - payer or payee must be you."
         elsif transaction_params['payer_email'] == transaction_params['payee_email']
             flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
