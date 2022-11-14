@@ -1,13 +1,13 @@
 {
   "RSpec": {
     "coverage": {
-      "/workspaces/splitsy/app/controllers/sessions_controller.rb": {
+      "/Users/yumengbai/Desktop/yumeng/uni/22fall/4152 ESaas/splitsy/app/controllers/sessions_controller.rb": {
         "lines": [
           1,
           null
         ]
       },
-      "/workspaces/splitsy/app/controllers/application_controller.rb": {
+      "/Users/yumengbai/Desktop/yumeng/uni/22fall/4152 ESaas/splitsy/app/controllers/application_controller.rb": {
         "lines": [
           1,
           null,
@@ -16,7 +16,7 @@
           null
         ]
       },
-      "/workspaces/splitsy/app/controllers/transactions_controller.rb": {
+      "/Users/yumengbai/Desktop/yumeng/uni/22fall/4152 ESaas/splitsy/app/controllers/transactions_controller.rb": {
         "lines": [
           1,
           1,
@@ -155,7 +155,7 @@
           null
         ]
       },
-      "/workspaces/splitsy/app/controllers/users_controller.rb": {
+      "/Users/yumengbai/Desktop/yumeng/uni/22fall/4152 ESaas/splitsy/app/controllers/users_controller.rb": {
         "lines": [
           1,
           1,
@@ -238,7 +238,7 @@
           null
         ]
       },
-      "/workspaces/splitsy/app/models/transaction.rb": {
+      "/Users/yumengbai/Desktop/yumeng/uni/22fall/4152 ESaas/splitsy/app/models/transaction.rb": {
         "lines": [
           1,
           1,
@@ -261,54 +261,54 @@
           null,
           null,
           1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
           null,
           null,
           1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
+          1,
+          1,
           null,
           null,
           1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
           null,
           null,
-          0,
-          0,
-          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
           null,
           null,
-          0,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
           null,
           null,
           1,
@@ -322,7 +322,7 @@
           null
         ]
       },
-      "/workspaces/splitsy/app/models/user.rb": {
+      "/Users/yumengbai/Desktop/yumeng/uni/22fall/4152 ESaas/splitsy/app/models/user.rb": {
         "lines": [
           1,
           1,
@@ -333,6 +333,6 @@
         ]
       }
     },
-    "timestamp": 1668464167
+    "timestamp": 1668465316
   }
 }

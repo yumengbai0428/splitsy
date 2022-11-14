@@ -36,8 +36,8 @@ class Transaction < ActiveRecord::Base
     end
 
     def self.find_tansactions_during_time(email, start_time, end_time)
-        payer_trans = Transaction.where('payer_email= ? and time >= ? and time<= ? ', email, start_time, end_time)
-        payee_trans = Transaction.where('payee_email= ? and time >= ? and time<= ? ', email, start_time, end_time)
+        payer_trans = Transaction.where('payer_email= ? and timestamp >= ? and timestamp<= ? ', email, start_time, end_time)
+        payee_trans = Transaction.where('payee_email= ? and timestamp >= ? and timestamp<= ? ', email, start_time, end_time)
         all_trans = []
         if not payee_trans.nil?
             payer_trans.each do |t|
@@ -53,8 +53,8 @@ class Transaction < ActiveRecord::Base
     end
 
     def self.find_tansactions_tag_time(email, tag, start_time, end_time)
-        payer_trans = Transaction.where('payer_email= ? and tag = ? and time >= ? and time<= ?', email, start_time, end_time)
-        payee_trans = Transaction.where('payee_email= ? and tag = ? and time >= ? and time<= ?', email, start_time, end_time)
+        payer_trans = Transaction.where('payer_email= ? and tag = ? and timestamp >= ? and timestamp<= ?', email, tag, start_time, end_time)
+        payee_trans = Transaction.where('payee_email= ? and tag = ? and timestamp >= ? and timestamp<= ?', email, tag, start_time, end_time)
         all_trans = []
         if not payee_trans.nil?
             payer_trans.each do |t|
