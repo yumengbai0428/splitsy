@@ -83,12 +83,13 @@ RSpec.describe Transaction, type: :model do
       Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp: '2022-11-13')
       Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp: '2022-11-12')
       Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, tag: 'food', timestamp: '2022-11-11')
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 300, percentage: 0.33, timestamp: '2022-11-11')
       @transactions = Transaction.all
     end
     
     context 'check default tag' do
       it 'finds transactions with tag expenditure' do
-        temp = Transaction.find_tansactions_tag_time('a@g', 'expenditure' '2022-11-11', '2022-11-13')
+        temp = Transaction.find_tansactions_tag_time('a@g', 'expenditure', '2022-11-11', '2022-11-13')
         descriptions = []
         temp.each do |t|
           descriptions.push(t["description"])
@@ -97,6 +98,7 @@ RSpec.describe Transaction, type: :model do
         expect(descriptions).to_not include('d2')
         expect(descriptions).to_not include('d3')
         expect(descriptions).to_not include('d4')
+        expect(descriptions).to include('d5')
       end
     end
   end
