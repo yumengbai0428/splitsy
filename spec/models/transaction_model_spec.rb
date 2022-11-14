@@ -83,20 +83,13 @@ RSpec.describe Transaction, type: :model do
       Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp: '2022-11-13')
       Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp: '2022-11-12')
       Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, tag: 'food', timestamp: '2022-11-11')
-<<<<<<< HEAD
       Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 300, percentage: 0.33, timestamp: '2022-11-11')
-=======
->>>>>>> 89d8edcf30ada4b42d040e7557e0637b4bdabb3b
       @transactions = Transaction.all
     end
     
     context 'check default tag' do
       it 'finds transactions with tag expenditure' do
-<<<<<<< HEAD
         temp = Transaction.find_tansactions_tag_time('a@g', 'expenditure', '2022-11-11', '2022-11-13')
-=======
-        temp = Transaction.find_tansactions_tag_time('a@g', 'expenditure' '2022-11-11', '2022-11-13')
->>>>>>> 89d8edcf30ada4b42d040e7557e0637b4bdabb3b
         descriptions = []
         temp.each do |t|
           descriptions.push(t["description"])
@@ -105,10 +98,7 @@ RSpec.describe Transaction, type: :model do
         expect(descriptions).to_not include('d2')
         expect(descriptions).to_not include('d3')
         expect(descriptions).to_not include('d4')
-<<<<<<< HEAD
         expect(descriptions).to include('d5')
-=======
->>>>>>> 89d8edcf30ada4b42d040e7557e0637b4bdabb3b
       end
     end
   end
