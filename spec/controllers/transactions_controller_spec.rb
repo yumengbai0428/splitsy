@@ -159,7 +159,6 @@ describe TransactionsController, :type => :controller do
         expect(flash[:notice]).to eq("#{transaction.id} was successfully updated.")
         expect(response).to redirect_to(transaction_path(transaction.id))
         expect(Transaction.find(transaction.id).description).to eq('d6')
-
       end
 
     end

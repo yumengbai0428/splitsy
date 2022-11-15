@@ -93,6 +93,22 @@ describe UsersController, :type => :controller do
             end
         end
 
+        context "edit user" do
+          before :each do
+            @user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
+            @user2 = User.create(id: 2,name: 'b', email: 'b@columbia.edu', password: 'p2', default_currency: 'Yen')
+            @users = User.all
+          end
+
+          it "should be updating user" do
+            user_param = {name: 'c'}
+            put :update, {id: 1, user: user_param}, {user_email: 'a@columbia.edu'}
+      
+            expect(flash[:notice]).to eq("#{@user1.email} was successfully updated.")
+          end
+          
+        end
+
 
 
 
