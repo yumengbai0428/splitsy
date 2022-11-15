@@ -62,6 +62,13 @@ describe UsersController, :type => :controller do
           before :each do
             user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
           end
+
+          it "check_login for nil session" do
+            get :show, nil, nil
+            expect(flash[:notice]).to eq("Invalid session, please login.")
+            expect(response).to redirect_to(welcome_path)
+        end
+
           it "Assigns a user" do
               get :show, {user_email: 'a@g'}, {user_email: 'a@columbia.edu'}
               expect(assigns(:user).name).to eq('a')

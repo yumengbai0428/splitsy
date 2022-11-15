@@ -190,7 +190,34 @@ describe TransactionsController, :type => :controller do
         get :index,nil,  {user_email: 'a@g'}
         expect(assigns(:transactions).size).to eq(3)
       end
+
+      it "multipe new transactions 1" do
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(3)
+        transaction = {payer_email: 'a@g',payee_email: 'd@g', description: 'd5', currency: '$', amount: 20, percentage: 0.25, timestamp:Date.today}
+        post :create, {transaction: transaction}, {user_email: 'a@g'}
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(4)
+        transaction = {payer_email: 'a@g',payee_email: 'b@g', description: 'd6', currency: '$', amount: 20, percentage: 0.25, timestamp:Date.today}
+        post :create, {transaction: transaction}, {user_email: 'a@g'}
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(5)
+      end
+
+      it "multipe new transactions 2" do
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(3)
+        transaction = {payer_email: 'd@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 20, percentage: 0.25, timestamp:Date.today}
+        post :create, {transaction: transaction}, {user_email: 'a@g'}
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(4)
+        transaction = {payer_email: 'b@g',payee_email: 'a@g', description: 'd6', currency: '$', amount: 20, percentage: 0.25, timestamp:Date.today}
+        post :create, {transaction: transaction}, {user_email: 'a@g'}
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(5)
+      end
     end
+  
 
     context "list" do
       before :each do
