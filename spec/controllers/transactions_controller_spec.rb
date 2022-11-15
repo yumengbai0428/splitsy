@@ -185,8 +185,7 @@ describe TransactionsController, :type => :controller do
         Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, timestamp:Time.new)
         @transactions = Transaction.all
       end
-      let(:pulp_fiction) { Movie.create!(title: 'Pulp Fiction', rating:'R', director: 'Quentin Tarantino' )}
-
+      
       it "Contains the correct number of transations" do
         get :index,nil,  {user_email: 'a@g'}
         expect(assigns(:transactions).size).to eq(3)
