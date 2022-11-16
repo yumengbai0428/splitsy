@@ -13,7 +13,7 @@ describe UsersController, :type => :controller do
     
           it "user not exist" do
             get :validate, user: {"email": "c@columbia.edu", "password": "p1"}
-            expect(flash[:notice]).to eq("User login was invalid.")
+            expect(flash[:notice]).to eq("User does not exist.")
             expect(response).to redirect_to('/welcome')
           end
 
