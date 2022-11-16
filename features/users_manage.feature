@@ -22,6 +22,12 @@ When I am on the welcome page
   Then I login as aladdin
   Then I am on the Splitsy home page
 
+Scenario: Login credentials should not be empty
+When I am on the welcome page
+  And I press "Sign Up"
+  And I press "Create User"
+  Then I should see 'invalid'
+
 Scenario: Existing user cannot sign up again
 When I am on the welcome page
   Then I should not be able to sign up as 'aladdin' with 'aladdin@columbia.edu' 
