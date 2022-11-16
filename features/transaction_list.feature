@@ -16,20 +16,6 @@ Background: transactions have been added to database
   | emma@gmail.com     | iris@gmail.com    | Rent3                 | US dollar      | 2000   | 0.33       |
 
   And I am on the Splitsy home page
-  # Then 7 seed transactions should exist
-
-Scenario: New user must be able to sign up
-When I am on the welcome page
-  Then I should be able to sign up as 'apple' with 'apple@gmail.com'
-
-Scenario: Existing user must be able to login
-When I login as aladdin
-  Then I am on the Splitsy home page
-
-Scenario: Existing user cannot sign up again
-When I am on the welcome page
-  Then I should not be able to sign up as 'aladdin' with 'aladdin@gmail.com' 
-  Then I am on the welcome page
 
 Scenario: Transactions of logged in user must be displayed
 When I login as aladdin
@@ -57,12 +43,6 @@ When I login as aladdin
   And I prompt "Delete"
   Then I should see 'deleted'
 
-Scenario: I am logged in and I log out
-When I login as aladdin
-  Then I am on the Splitsy home page
-  Then I follow "Logout"
-  Then I am on the welcome page
-
 Scenario: I want to edit an existing transaction
 When I login as aladdin
   And I follow "View all transactions"
@@ -86,23 +66,3 @@ Scenario: I want to filter transactions by tag and date
 When I login as aladdin
   And I follow "View all transactions"
   Then I should see 1 transactions from '1/1/1990' to '11/01/2022' with tag 'Bar'
-
-Scenario: I want to view my profile
-When I login as aladdin
-  And I follow "My Profile"
-  Then I should see 'Your Profile'
-
-Scenario: I want to edit my profile
-When I login as aladdin
-  And I follow "My Profile"
-  And I follow "Edit"
-  And I choose "Default Currency" as "Rupee"
-  And I press "Update Your Info"
-  Then I should see 'successfully updated'
-
-Scenario: I want to cancel edit my profile
-When I login as aladdin
-  And I follow "My Profile"
-  And I follow "Edit"
-  And I follow "Cancel"
-  Then I am on the Splitsy home page 
