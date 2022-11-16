@@ -221,9 +221,9 @@ describe TransactionsController, :type => :controller do
     context "list" do
       before :each do
         Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5, tag: 'food', timestamp: '2022-11-11')
-        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp: '2022-11-12')
-        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp: '2022-11-11')
-        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, timestamp: '2022-11-11')
+        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, tag: 'expenditure', timestamp: '2022-11-12')
+        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, tag: 'expenditure', timestamp: '2022-11-11')
+        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, tag: 'expenditure', timestamp: '2022-11-11')
       end
       it "no parameter" do
         get :list, {filter_form:{}}, {user_email: 'a@g'}
@@ -231,17 +231,37 @@ describe TransactionsController, :type => :controller do
       end
 
       it "only tag" do
-        get :list, {filter_form:{tag: 'expenditure'}}, {user_email: 'a@g'}
+        get :list, {filter_form:{tag: 'expenditure', start_date: '', end_date:''}}, {user_email: 'a@g'}
         expect(assigns(:transactions).size).to eq(2)
       end
 
-      it "only time" do
-        get :list, {filter_form:{start_time: '2022-11-11', end_time:'2022-11-12'}}, {user_email: 'a@g'}
+      it "only start time" do
+        get :list, {filter_form:{tag: '', start_date: '2022-11-11', end_date:''}}, {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(3)
+      end
+
+      it "only end time" do
+        get :list, {filter_form:{tag: '', end_date: '2022-12-13', start_date:''}}, {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(3)
+      end
+
+      it "start and end time" do
+        get :list, {filter_form:{tag: '', start_date: '2022-11-11', end_date:'2022-11-12'}}, {user_email: 'a@g'}
         expect(assigns(:transactions).size).to eq(2)
+      end
+
+      it "end time and tag" do
+        get :list, {filter_form:{tag: 'expenditure', start_date: '', end_date:'2022-11-12'}}, {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(1)
+      end
+
+      it "start time and tag" do
+        get :list, {filter_form:{tag: 'expenditure', start_date: '2022-11-12', end_date:''}}, {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(1)
       end
 
       it "time and tag" do
-        get :list, {filter_form:{tag: 'expenditure', start_time: '2022-11-11', end_time:'2022-11-12'}}, {user_email: 'a@g'}
+        get :list, {filter_form:{tag: 'expenditure', start_date: '2022-11-11', end_date:'2022-11-12'}}, {user_email: 'a@g'}
         expect(assigns(:transactions).size).to eq(1)
       end
     end

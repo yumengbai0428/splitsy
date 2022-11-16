@@ -56,7 +56,7 @@ class TransactionsController < ApplicationController
 
     def list
         @user_email = session[:user_email]
-        if params["filter_form"].nil? || (params["filter_form"]["tag"].nil? || params["filter_form"]["tag"] == "") &&  params["filter_form"]["start_date"].nil? && params["filter_form"]["end_date"].nil?
+        if params["filter_form"].nil? || (params["filter_form"]["tag"].nil? || params["filter_form"]["tag"] == "") &&  (params["filter_form"]["start_date"].nil? && params["filter_form"]["start_date"] != "") && (params["filter_form"]["end_date"].nil? && params["filter_form"]["end_date"] != "")
             @transactions = Transaction.all_transactions_for_user(session[:user_email])
         else
             @transactions = Transaction.find_tansactions_tag_time(session[:user_email],  params["filter_form"]["tag"], params["filter_form"]["start_date"], params["filter_form"]["end_date"])
