@@ -31,10 +31,10 @@ class TransactionsController < ApplicationController
                 end
             else 
                 @total_dues += transaction['amount']
-                if not money_map.key?(payee)
-                    money_map[payee] = - transaction['amount']
+                if not money_map.key?(payer)
+                    money_map[payer] = - transaction['amount']
                 else 
-                    money_map[payee] += - transaction['amount']
+                    money_map[payer] += - transaction['amount']
                 end
             end
         end
