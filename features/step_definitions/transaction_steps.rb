@@ -151,6 +151,17 @@ Then /I create new transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*
   click_button "Save Changes"
 end
 
+Then /I fill with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage, date|
+  select(payer_email, from: "Payer Email")
+  select(payee_email, from: "Payee Email")
+  fill_in "Description", :with => description
+  select currency, :from => "Currency"
+  fill_in "Amount", :with => amount
+  fill_in "Percentage split", :with => percentage
+  fill_in "Date", :with => date
+  click_button "Save Changes"
+end
+
 Then /I click on the first transaction learn more about/ do
   click_link("More about this transaction", match: :first)
 end
@@ -160,7 +171,6 @@ Then /I edit the field "(.*)" with "(.*)"/ do |field_name, new_value|
 end
 
 Then('I should see {int} transactions from {string} to {string}') do |num_transactions, date1, date2|
-
   fill_in 'Start date', :with => date1
   fill_in 'End date', :with => date2
 
@@ -193,10 +203,8 @@ When('I choose {string} as {string}') do |string, string2|
 end
 
 When('I prompt {string}') do |string|
-  if string == "OK"
-    accept_confirm do
-      click_link string
-    end
+  accept_confirm("Are you sure?") do
+    click_link(string)
   end
 end
 
