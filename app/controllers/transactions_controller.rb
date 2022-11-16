@@ -3,6 +3,7 @@ class TransactionsController < ApplicationController
     before_action :check_login
     def show
         id = params[:id]
+        @user = User.find_user(params[:user_email])
         @transaction = Transaction.find(id)
         @converted_amount = convert_amount
     end
@@ -62,7 +63,7 @@ class TransactionsController < ApplicationController
         elsif params["filter_form"]["start_time"].nil?
             @transactions = Transaction.find_tansactions_by_tag(session[:user_email],  params["filter_form"]["tag"])
         else
-            @transactions = Transaction.find_tansactions_tag_time(session[:email],  params["filter_form"]["tag"], params["filter_form"]["start_time"], params["filter_form"]["end_time"])
+            @transactions = Transaction.find_tansactions_tag_time(session[:user_email],  params["filter_form"]["tag"], params["filter_form"]["start_time"], params["filter_form"]["end_time"])
         end
     end
 

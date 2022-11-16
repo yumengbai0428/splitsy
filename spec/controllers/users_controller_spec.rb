@@ -62,8 +62,15 @@ describe UsersController, :type => :controller do
           before :each do
             user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
           end
+
+          it "check_login for nil session" do
+            get :show, nil, nil
+            expect(flash[:notice]).to eq("Invalid session, please login.")
+            expect(response).to redirect_to(welcome_path)
+        end
+
           it "Assigns a user" do
-              get :show, {user_email: 'a@g'}, {user_email: 'a@g'}
+              get :show, {user_email: 'a@g'}, {user_email: 'a@columbia.edu'}
               expect(assigns(:user).name).to eq('a')
           end
        end
@@ -84,6 +91,22 @@ describe UsersController, :type => :controller do
               expect(flash[:notice]).to eq("User with email already exists.")
               expect(response).to redirect_to(welcome_path)
             end
+        end
+
+        context "edit user" do
+          before :each do
+            @user1 = User.create(id: 1, name: 'a', email: 'a@columbia.edu', password: 'p1', default_currency: '$')
+            @user2 = User.create(id: 2,name: 'b', email: 'b@columbia.edu', password: 'p2', default_currency: 'Yen')
+            @users = User.all
+          end
+
+          it "should be updating user" do
+            user_param = {name: 'c'}
+            put :update, {id: 1, user: user_param}, {user_email: 'a@columbia.edu'}
+      
+            expect(flash[:notice]).to eq("#{@user1.email} was successfully updated.")
+          end
+          
         end
 
 
