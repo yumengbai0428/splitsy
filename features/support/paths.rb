@@ -15,6 +15,8 @@ module NavigationHelpers
 
     when /^the Splitsy home page$/ then '/transactions'
 
+    when /^user page of aladdin@gmail.com$/ then '/users/aladdin@gmail.com'
+
     else
       begin
         page_name =~ /^the (.*) page$/

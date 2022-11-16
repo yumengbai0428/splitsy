@@ -55,7 +55,7 @@ class UsersController < ApplicationController
     def validate
         user = User.find_user(params["user"]["email"])
         if user.empty?
-            flash[:notice] = "User login was invalid."
+            flash[:notice] = "User does not exist."
             redirect_to welcome_path
         end
         if user.size() != 0

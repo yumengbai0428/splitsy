@@ -1,12 +1,7 @@
-# Add a declarative step here for populating the DB with movies.
-
 Given /the following transactions exist/ do |transactions_table|
   transactions_table.hashes.each do |transaction|
-    # each returned element will be a hash whose key is the table header.
-    # you should arrange to add that movie to the database here.
     Transaction.create(transaction)
   end
-  # pending "Fill in this step in movie_steps.rb"
 end
 
 Then /(.*) seed transactions should exist/ do | n_seeds |
@@ -23,21 +18,12 @@ Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   expect(page.body.index(e1)).to be < page.body.index(e2)
 end
 
-# Make it easier to express checking or unchecking several boxes at once
-#  "When I uncheck the following ratings: PG, G, R"
-#  "When I check the following ratings: G"
-
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
-  # HINT: use String#split to split up the rating_list, then
-  #   iterate over the ratings and reuse the "When I check..." or
-  #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
-  # pending "Fill in this step in movie_steps.rb"
   rating_list.split(',').each do |rating|
     step %(I #{uncheck}check "#{rating}")
   end
 end
 
-# Part 2, Step 3
 Then /^I should (not )?see the following transactions: (.*)$/ do |no, transaction_list|
   # Take a look at web_steps.rb Then /^(?:|I )should see "([^"]*)"$/
   transaction_list.split /,\s*/ do |transaction|
@@ -46,14 +32,12 @@ Then /^I should (not )?see the following transactions: (.*)$/ do |no, transactio
 end
 
 Then /I should see all transactions of (.*)/ do |user_email|
-  # Make sure that all the movies in the app are visible in the table
   @transaction_list = Transaction.all_transactions_for_user(user_email)
   expect(@transaction_list.count).to eq(5)
   
 end
 
 Given /I am logged in as (.*) with (.*)/ do |email, password|
-  # Write code here that turns the phrase above into concrete actions
   click_button "Login"
 
   fill_in "Email", :with => email
@@ -62,7 +46,6 @@ Given /I am logged in as (.*) with (.*)/ do |email, password|
 end
 
 Then /I should be able to add and delete a transaction from (.*) to (.*)/ do |payer_email, payee_email|
-  # Write code here that turns the phrase above into concrete actions
   new_transaction = Transaction.create!(
     :payer_email => payer_email, 
     :payee_email => payee_email, 
@@ -75,11 +58,10 @@ Then /I should be able to add and delete a transaction from (.*) to (.*)/ do |pa
 end
 
 When /I login as (.*)/ do |user_name|
-  # Write code here that turns the phrase above into concrete actions
   click_button "Login"
 
   email = 'aladdin@gmail.com'
-  password = 'secretpass'
+  password = 'password'
 
   @user = User.create!(
     :name => user_name,
@@ -90,11 +72,10 @@ When /I login as (.*)/ do |user_name|
   fill_in "Email", :with => @user.email
   fill_in "Password", :with => @user.password
   click_button "Login"
-  expect page.body.include? "All Transactions"
+  expect page.body.include? "Transactions Summary"
 end
 
 Then /I should be able to sign up as '(.*)' with '(.*)'/ do |name, email|
-  # Write code here that turns the phrase above into concrete actions
   click_button "Sign Up"
   password = 'apple'
 
@@ -105,7 +86,6 @@ Then /I should be able to sign up as '(.*)' with '(.*)'/ do |name, email|
 end
 
 Then /I should not be able to sign up as '(.*)' with '(.*)'/ do |name, email|
-  # Write code here that turns the phrase above into concrete actions
   click_button "Sign Up"
   password = 'apple'
 
@@ -119,7 +99,17 @@ Then /I should not be able to sign up as '(.*)' with '(.*)'/ do |name, email|
   fill_in "Email", :with => email
   fill_in "Password", :with => password
   click_button "Create User"
-  expect page.body.include? "Welcome"
+  expect page.body.include? "User with email already exists"
+end
+
+Then /I try to check my profile '(.*)'/ do |email_id|
+  visit path_to("user page of " + email_id)
+end
+
+Then /I fill my login details '(.*)', '(.*)'/ do |email_id, password| 
+  fill_in "Email", :with => email_id
+  fill_in "Password", :with => password
+  click_button "Login"
 end
 
 Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage|
@@ -128,9 +118,20 @@ Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'
   select payee_email, :from => "Payee Email"
   fill_in "Description", :with => description
   select currency, :from => "Currency"
+  fill_in "Amount", :with => amount
   fill_in "Percentage split", :with => percentage
   click_button "Save Changes"
   expect Transaction.all.size() == count + 1
+end
+
+Then /I create new transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage|
+  select(payer_email, from: "Payer Email")
+  select(payee_email, from: "Payee Email")
+  fill_in "Description", :with => description
+  select currency, :from => "Currency"
+  fill_in "Amount", :with => amount
+  fill_in "Percentage split", :with => percentage
+  click_button "Save Changes"
 end
 
 Then /I click on the first transaction learn more about/ do
@@ -139,6 +140,43 @@ end
 
 Then /I edit the field "(.*)" with "(.*)"/ do |field_name, new_value|
   fill_in field_name, :with => new_value
+end
+
+Then('I should see {int} transactions from {string} to {string}') do |num_transactions, date1, date2|
+  select_date date1, from: 'Start date'
+  select_date date2, from: 'End date'
+  click_button 'Search'
+  expect Transaction.all.size() == num_transactions
+end
+
+Then('I should see {int} transactions with tag {string}') do |num_transactions, tag|
+  fill_in 'Tag', :with => tag
+  click_button 'Search'
+  expect Transaction.all.size() == num_transactions
+end
+
+Then('I should see {int} transactions from {string} to {string} with tag {string}') do |num_transactions, date1, date2, tag|
+  fill_in 'Tag', :with => tag
+  select_date date1, from: 'Start date'
+  select_date date2, from: 'End date'
+  click_button 'Search'
+  expect Transaction.all.size() == num_transactions
+end
+
+Then('I should see {string}') do |string|
+  expect page.body.include? string
+end
+
+When('I choose {string} as {string}') do |string, string2|
+  select string2, :from => string
+end
+
+When('I prompt {string}') do |string|
+  if string == "OK"
+    accept_confirm do
+      click_link string
+    end
+  end
 end
 
 #Then /I should see all the transactions/ do

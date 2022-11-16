@@ -16,7 +16,9 @@
   </li>
   <li>
     Date:
-    <%= @transaction.timestamp.to_a[3, 3].join("/") %>
+    <%= if @transaction.timestamp.to_a[3, 3] != nil 
+           @transaction.timestamp.to_a[3, 3].join("/") 
+        end %>
   </li>
 </ul>
 

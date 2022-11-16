@@ -1,29 +1,30 @@
 <!--  This file is app/views/transactions/index.html.erb -->
-<%= link_to 'My Profile', user_path(@user_email), :class => 'btn btn-info' %>
+<%= link_to 'My Profile', user_path(@user_email), :class => 'btn btn-info'%>
 <h2>All Transactions</h2> 
+<div class="container-fluid" style="align-items: center">
 <%= form_for :filter_form, url: all_transactions_path do |f| %>
-  <div class="form-group">
-      <%= f.label :tag %>
-      <%= f.text_field :tag %>
+  <div class="mb3 form-group" style="width:300px;">
+      <%= f.label :tag, :class => 'form-label' %>
+      <%= f.text_field :tag, :class => 'form-control' %>
   </div>
 
-  <div class="form-group">
-      <%= f.label :start_date %>
-      <%= f.date_field :start_date %>
+  <div class="mb3" style="width:300px;">
+      <%= f.label :start_date, :class => 'form-label' %>
+      <%= f.date_field :start_date, :class => 'form-control' %>
   </div>
 
-  <div class="form-group">
-      <%= f.label :end_date %>
-      <%= f.date_field :end_date %>
+  <div class="mb3" style="width:300px;">
+      <%= f.label :end_date , :class => 'form-label'%>
+      <%= f.date_field :end_date, :class => 'form-control' %>
   </div>
-
-  <div class="form-group">
-      <%= submit_tag 'Search' %>                
+  <br>
+  <div class="mb3">
+      <%= submit_tag 'Search', :class => 'btn btn-info'%>                
   </div>
   <% end %>
 </div>
 
-<table class="table table-striped col-md-12" id="transactions">
+<table class="table table-hover" style="max-width: 70%; align-center: true;" id="transactions">
   <thead>
     <tr>
       <th>Payer</th>
@@ -32,6 +33,7 @@
       <th>Amount</th>
       <th>Currency</th>
       <th>Date</th>
+      <th>Tag</th>
       <th>More info</th>
     </tr>
   </thead>
@@ -54,7 +56,12 @@
           <%= transaction.currency %>
         </td>
         <td>
-          <%= transaction.timestamp.to_a[3, 3].join("/") %>
+          <%= if transaction.timestamp.to_a[3, 3] != nil
+                 transaction.timestamp.to_a[3, 3].join("/") 
+              end %>
+        </td>
+        <td>
+          <%= transaction.tag %>
         </td>
         <td>
           <%= link_to "More about this transaction", transaction_path(transaction) %>
@@ -66,3 +73,5 @@
 <%= link_to 'Add new transaction', new_transaction_path, :class => 'btn btn-info' %>
 <%= link_to 'Logout', logout_path, :class => 'btn btn-info' %>
 <%= link_to 'Back to transaction list', transactions_path, :class => 'btn btn-info' %>
+</div>
+

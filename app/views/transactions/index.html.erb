@@ -2,9 +2,9 @@
 <%= link_to 'My Profile', user_path(@user_email), :class => 'btn btn-info' %>
 <h2>Transactions Summary</h2> 
 <% if @total_dues > 0 %>
- <h3> You owe people <%@total_dues%> </h3>
+ <h3> You owe people <%= @total_dues%> </h3>
  <% elsif @total_dues < 0 %>
-  <h3> You are owed <% -@total_dues%> </h3>
+  <h3> You are owed <%= -@total_dues%> </h3>
   <% else %>
   <h3> You have settled all balances! </h3>
 <% end %>
@@ -13,7 +13,6 @@
     <tr>
       <th>Friend</th>
       <th>Balances?</th>
-      <th>Amount</th>
     </tr>
   </thead>
   <tbody>
@@ -24,16 +23,13 @@
         </td>
         <td>
           <% if person['amount_due'] > 0 %>
-            You owe them <% person['amount_due'] %>
+            You owe them <%= person['amount_due'] %>
           <% elsif person['amount_due'] < 0 %>
-            They owe you
+            They owe you <%= person['amount_due'].abs() %>
           <% else %>
             All balances settled
           <% end %>
         </td>
-        <td>
-          <%= person['amount_due'].abs() %>
-         </td>
       </tr>
     <% end %>
   </tbody>
