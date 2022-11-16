@@ -79,7 +79,7 @@ When /I login as (.*)/ do |user_name|
   click_button "Login"
 
   email = 'aladdin@gmail.com'
-  password = 'secretpass'
+  password = 'password'
 
   @user = User.create!(
     :name => user_name,
@@ -90,7 +90,7 @@ When /I login as (.*)/ do |user_name|
   fill_in "Email", :with => @user.email
   fill_in "Password", :with => @user.password
   click_button "Login"
-  expect page.body.include? "All Transactions"
+  expect page.body.include? "Transactions Summary"
 end
 
 Then /I should be able to sign up as '(.*)' with '(.*)'/ do |name, email|
@@ -128,9 +128,20 @@ Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'
   select payee_email, :from => "Payee Email"
   fill_in "Description", :with => description
   select currency, :from => "Currency"
+  fill_in "Amount", :with => amount
   fill_in "Percentage split", :with => percentage
   click_button "Save Changes"
   expect Transaction.all.size() == count + 1
+end
+
+Then /I create new transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage|
+  select(payer_email, from: "Payer Email")
+  select(payee_email, from: "Payee Email")
+  fill_in "Description", :with => description
+  select currency, :from => "Currency"
+  fill_in "Amount", :with => amount
+  fill_in "Percentage split", :with => percentage
+  click_button "Save Changes"
 end
 
 Then /I click on the first transaction learn more about/ do
@@ -139,6 +150,43 @@ end
 
 Then /I edit the field "(.*)" with "(.*)"/ do |field_name, new_value|
   fill_in field_name, :with => new_value
+end
+
+Then('I should see {int} transactions from {string} to {string}') do |num_transactions, date1, date2|
+  select_date date1, from: 'Start date'
+  select_date date2, from: 'End date'
+  click_button 'Search'
+  expect Transaction.all.size() == num_transactions
+end
+
+Then('I should see {int} transactions with tag {string}') do |num_transactions, tag|
+  fill_in 'Tag', :with => tag
+  click_button 'Search'
+  expect Transaction.all.size() == num_transactions
+end
+
+Then('I should see {int} transactions from {string} to {string} with tag {string}') do |num_transactions, date1, date2, tag|
+  fill_in 'Tag', :with => tag
+  select_date date1, from: 'Start date'
+  select_date date2, from: 'End date'
+  click_button 'Search'
+  expect Transaction.all.size() == num_transactions
+end
+
+Then('I should see {string}') do |string|
+  expect page.body.include? string
+end
+
+When('I choose {string} as {string}') do |string, string2|
+  select string2, :from => string
+end
+
+When('I prompt {string}') do |string|
+  if string == "OK"
+    accept_confirm do
+      click_link string
+    end
+  end
 end
 
 #Then /I should see all the transactions/ do
