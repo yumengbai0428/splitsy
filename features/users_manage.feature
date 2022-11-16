@@ -3,9 +3,18 @@ Feature: sign up and login into splitsy
   I am concerned about how much money I have spent
   So I want to sign up or login to Splitsy and manage my profile
 
+Background: transactions have been added to database
+
+  Given the following users exist:
+  | name   | email               | password     | default_currency      
+  | Bob    | bob@columbia.edu    | password     | US dollar
+  | Carla  | carla@columbia.edu  | password     | US dollar
+  | David  | david@columbia.edu  | password     | US dollar
+  | Emma   | emma@columbia.edu   | password     | US dollar
+
 Scenario: New user must be able to sign up
 When I am on the welcome page
-  Then I should be able to sign up as 'apple' with 'apple@gmail.com'
+  Then I should be able to sign up as 'apple' with 'apple@columbia.edu'
   Then I am on the Splitsy home page
 
 Scenario: Existing user must be able to login
@@ -15,7 +24,7 @@ When I am on the welcome page
 
 Scenario: Existing user cannot sign up again
 When I am on the welcome page
-  Then I should not be able to sign up as 'aladdin' with 'aladdin@gmail.com' 
+  Then I should not be able to sign up as 'aladdin' with 'aladdin@columbia.edu' 
   Then I am on the welcome page
   Then I should see 'User with email already exists.'
 
@@ -50,7 +59,7 @@ When I am on the welcome page
   Then I am on the Splitsy home page 
 
 Scenario: I try to access my profile without loggin in
-When I try to check my profile 'aladdin@gmail.com'
+When I try to check my profile 'bob@columbia.edu'
   Then I am on the welcome page
   Then I should see 'Invalid session, please login.'
 
@@ -64,6 +73,6 @@ When I am on the welcome page
 Scenario: I try to login with the incorrect password
 When I am on the welcome page
   Then I press "Login"
-  Then I fill my login details 'aladdin@gmail.com', 'test'
+  Then I fill my login details 'bob@columbia.edu', 'test'
   Then I am on the welcome page
   Then I should see 'User login was invalid.'

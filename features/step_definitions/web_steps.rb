@@ -103,15 +103,10 @@ When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
 end
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|
-  print("a")
-  print(page)
-  print(page.html)
-  print("b")
   expect(page).to have_text(text)
 end
 
 Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
-  print("b")
   regexp = Regexp.new(regexp)
 
   assert page.has_content?('//*', :text => regexp)

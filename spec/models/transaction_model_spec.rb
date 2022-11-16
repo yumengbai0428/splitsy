@@ -38,7 +38,7 @@ RSpec.describe Transaction, type: :model do
     
     context 'check default tag' do
       it 'finds transactions with tag expenditure' do
-        temp = Transaction.find_tansactions_by_tag('a@g', 'expenditure')
+        temp = Transaction.find_tansactions_tag_time('a@g', 'expenditure', '', '')
         descriptions = []
         temp.each do |t|
           descriptions.push(t["description"])
@@ -63,7 +63,7 @@ RSpec.describe Transaction, type: :model do
     
     context 'check default tag' do
       it 'finds transactions with tag expenditure' do
-        temp = Transaction.find_tansactions_during_time('a@g', '2022-11-11', '2022-11-13')
+        temp = Transaction.find_tansactions_tag_time('a@g', '', '2022-11-11', '2022-11-13')
         descriptions = []
         temp.each do |t|
           descriptions.push(t["description"])

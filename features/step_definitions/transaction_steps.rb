@@ -4,6 +4,12 @@ Given /the following transactions exist/ do |transactions_table|
   end
 end
 
+Given /the following users exist/ do |users_table|
+  users_table.hashes.each do |user|
+    User.create(user)
+  end
+end
+
 Then /(.*) seed transactions should exist/ do | n_seeds |
   expect(Transaction.count).to eq n_seeds.to_i
 end
@@ -60,7 +66,7 @@ end
 When /I login as (.*)/ do |user_name|
   click_button "Login"
 
-  email = 'aladdin@gmail.com'
+  email = 'aladdin@columbia.edu'
   password = 'password'
 
   @user = User.create!(
@@ -83,6 +89,17 @@ Then /I should be able to sign up as '(.*)' with '(.*)'/ do |name, email|
   fill_in "Email", :with => email
   fill_in "Password", :with => password
   click_button "Create User"
+end
+
+Then('I should not be sign up as {string} with wrong password') do |email|
+  click_button "Login"
+
+  fill_in "Email", :with => name
+  fill_in "Password", :with => '12345'
+
+  click_button "Login"
+  expect page.body.include? "invalid"
+
 end
 
 Then /I should not be able to sign up as '(.*)' with '(.*)'/ do |name, email|
@@ -143,8 +160,10 @@ Then /I edit the field "(.*)" with "(.*)"/ do |field_name, new_value|
 end
 
 Then('I should see {int} transactions from {string} to {string}') do |num_transactions, date1, date2|
-  select_date date1, from: 'Start date'
-  select_date date2, from: 'End date'
+
+  fill_in 'Start date', :with => date1
+  fill_in 'End date', :with => date2
+
   click_button 'Search'
   expect Transaction.all.size() == num_transactions
 end
@@ -157,8 +176,10 @@ end
 
 Then('I should see {int} transactions from {string} to {string} with tag {string}') do |num_transactions, date1, date2, tag|
   fill_in 'Tag', :with => tag
-  select_date date1, from: 'Start date'
-  select_date date2, from: 'End date'
+
+  fill_in 'Start date', :with => date1
+  fill_in 'End date', :with => date2
+
   click_button 'Search'
   expect Transaction.all.size() == num_transactions
 end
