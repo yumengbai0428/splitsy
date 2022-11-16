@@ -279,7 +279,6 @@
           null,
           null,
           1,
-<<<<<<< HEAD
           2,
           2,
           2,
@@ -311,56 +310,6 @@
           null,
           null,
           2,
-=======
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
->>>>>>> 90f3758a196d9e76a75118cbbe95d78a3a685c46
           null,
           null,
           1,
@@ -385,10 +334,6 @@
         ]
       }
     },
-<<<<<<< HEAD
-    "timestamp": 1668480656
-=======
-    "timestamp": 1668465316
->>>>>>> 90f3758a196d9e76a75118cbbe95d78a3a685c46
+    "timestamp": 1668528631
   }
 }
