@@ -18,23 +18,116 @@ class TransactionsController < ApplicationController
     def transform
         money_map = {}
         @total_dues = 0
+        conv_factor = 1.0
         @transactions.each do |transaction|
+
+            case User.where('email = ?', session[:user_email])[0].default_currency
+            when 'Canadian dollar'
+                if transaction['currency'] == 'Yuan'
+                    conv_factor = 0.19
+                elsif transaction['currency'] == 'Yen'
+                    conv_factor = 0.01
+                elsif transaction['currency'] == 'US dollar'
+                    conv_factor = 1.34
+                elsif transaction['currency'] == 'Euro'
+                    conv_factor = 1.41
+                elsif transaction['currency'] == 'Rupee'
+                    conv_factor = 0.02
+                else
+                    conv_factor = 1
+                end
+                #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "CAD", "USD")
+            when 'Yuan'
+                if transaction['currency'] == 'Canadian dollar'
+                    conv_factor = 5.25
+                elsif transaction['currency'] == 'Yen'
+                    conv_factor = 0.05
+                elsif transaction['currency'] == 'US dollar'
+                    conv_factor = 7.04
+                elsif transaction['currency'] == 'Euro'
+                    conv_factor = 7.42
+                elsif transaction['currency'] == 'Rupee'
+                    conv_factor = 0.09
+                else
+                    conv_factor = 1
+                end
+                #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "CNY", "USD")
+            when 'Rupee'
+                if transaction['currency'] == 'Yuan'
+                    conv_factor = 11.52
+                elsif transaction['currency'] == 'Yen'
+                    conv_factor = 0.60
+                elsif transaction['currency'] == 'US dollar'
+                    conv_factor = 81.12
+                elsif transaction['currency'] == 'Euro'
+                    conv_factor = 85.47
+                elsif transaction['currency'] == 'Canadian dollar'
+                    conv_factor = 60.42
+                else
+                    conv_factor = 1
+                end
+                #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "INR", "USD")
+            when 'Yen'
+                if transaction['currency'] == 'Yuan'
+                    conv_factor = 19
+                elsif transaction['currency'] == 'Canadian dollar'
+                    conv_factor = 101
+                elsif transaction['currency'] == 'US dollar'
+                    conv_factor = 135
+                elsif transaction['currency'] == 'Euro'
+                    conv_factor = 142
+                elsif transaction['currency'] == 'Rupee'
+                    conv_factor = 2
+                else
+                    conv_factor = 1
+                end
+                #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "JPY", "USD")
+            when 'Euro'
+                if transaction['currency'] == 'Yuan'
+                    conv_factor = 0.13
+                elsif transaction['currency'] == 'Yen'
+                    conv_factor = 0.01
+                elsif transaction['currency'] == 'US dollar'
+                    conv_factor = 0.95
+                elsif transaction['currency'] == 'Canadian dollar'
+                    conv_factor = 0.71
+                elsif transaction['currency'] == 'Rupee'
+                    conv_factor = 0.01
+                else
+                    conv_factor = 1
+                end
+                #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "EUR", "USD")
+            else
+                if transaction['currency'] == 'Yuan'
+                    conv_factor = 0.14
+                elsif transaction['currency'] == 'Yen'
+                    conv_factor = 0.01
+                elsif transaction['currency'] == 'Canadian dollar'
+                    conv_factor = 0.74
+                elsif transaction['currency'] == 'Euro'
+                    conv_factor = 1.05
+                elsif transaction['currency'] == 'Rupee'
+                    conv_factor = 0.01
+                else
+                    conv_factor = 1
+                end
+            end
             payer = transaction['payer_email']
             payee = transaction['payee_email']
             is_payer = payer == session[:user_email]
             if is_payer
-                @total_dues -= transaction['amount']
+                @total_dues -= (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
                 if not money_map.key?(payee)
-                    money_map[payee] = transaction['amount']
+                    money_map[payee] = -(transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
                 else 
-                    money_map[payee] += transaction['amount']
+                    money_map[payee] -= (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
                 end
             else 
-                @total_dues += transaction['amount']
+                @total_dues += (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
                 if not money_map.key?(payer)
-                    money_map[payer] = - transaction['amount']
+                    money_map[payer] = (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
                 else 
-                    money_map[payer] += - transaction['amount']
+                    money_map[payer] +=(transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
                 end
             end
         end
