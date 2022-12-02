@@ -4,7 +4,7 @@ class CreateTransactions < ActiveRecord::Migration
       t.string :payer_email
       t.string :payee_email
       t.text :description
-      t.string :currency
+      t.string :currency, :default => "US dollar"
       t.float :amount
       t.float :percentage
     end
