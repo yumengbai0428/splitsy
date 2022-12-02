@@ -10,27 +10,23 @@ class RepaymentsController < ApplicationController
     end
 
 
-    def index
+    def list
         @user_email = session[:user_email]
         filter_form = params["filter_form"]
         @repayments = Repayment.all_repayment_for_user(session[:user_email])
-       
     end
 
     def new
         @users = Transaction.all_user_mails
     end
 
-    def validate_create
+    def validate_repayment
         flag = false
 
         if session[:user_email] == params["repayment"]['payee_email']
             flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
         elsif params["repayment"]['amount'].to_i > Transaction.owe_money(session[:user_email], params["repayment"]['payee_email'])
-            puts params["repayment"]['amount']
-            puts "---"
-            puts Transaction.owe_money(session[:user_email], params["repayment"]['payee_email'])
-            flash[:notice] = "Invalid transaction - you can't repay more than what you owe"
+           flash[:notice] = "Invalid transaction - you can't repay more than what you owe"
         else
             flag = true
         end
@@ -38,15 +34,20 @@ class RepaymentsController < ApplicationController
     end
 
     def create
-        if validate_create
+        if validate_repayment
             begin
-                @transaction = Transaction.create!(transaction_params)
+                p = params["repayment"].clone
+                p.merge!('payer_email': session[:user_email])
+                p["amount"]=p["amount"].to_f
+
+                p.permit!
+                @repayment = Repayment.create!(p)
                 flash[:notice] = "Transaction was successfully created."
             rescue ActiveRecord::RecordInvalid => invalid
                 flash[:notice] = "Invalid transaction amount/percentage."
             end
         end
-        redirect_to transactions_path
+        redirect_to all_repayments_path
     end
 
     def update

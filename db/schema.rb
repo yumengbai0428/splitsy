@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20221201225946) do
     t.string   "payer_email"
     t.string   "payee_email"
     t.string   "currency"
-    t.integer  "amount"
+    t.float    "amount"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false

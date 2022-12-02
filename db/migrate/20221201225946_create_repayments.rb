@@ -4,7 +4,7 @@ class CreateRepayments < ActiveRecord::Migration
       t.string :payer_email
       t.string :payee_email
       t.string :currency
-      t.integer :amount
+      t.float :amount
       t.text :description
 
       t.timestamps null: false
