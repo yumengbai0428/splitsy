@@ -1,0 +1,40 @@
+<!--  This file is app/views/transactions/index.html.erb -->
+<%= link_to 'My Profile', user_path(@user_email), :class => 'btn btn-info'%>
+<h2>All Repayments</h2> 
+
+<table class="table table-hover" style="max-width: 70%; align-center: true;" id="transactions">
+  <thead>
+    <tr>
+      <th>Payer</th>
+      <th>Payee</th>
+      <th>Description</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @repayments.each do |repayment| %>
+      <tr>
+        <td>
+          <%= repayment.payer_email %>
+        </td>
+        <td>
+          <%= repayment.payee_email %>
+        </td>
+        <td>
+          <%= repayment.description %>
+        </td>
+        <td>
+          <%= repayment.amount %>
+        </td>
+        <td>
+          <%= repayment.currency %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Add new repayment', new_repayment_path, :class => 'btn btn-info' %>
+<%= link_to 'Logout', logout_path, :class => 'btn btn-info' %>
+<%= link_to 'Back to transaction list', transactions_path, :class => 'btn btn-info' %>
+</div>
+
