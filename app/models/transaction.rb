@@ -59,6 +59,23 @@ class Transaction < ActiveRecord::Base
         return all_trans
     end
 
+    def self.owe_money(payer_email, payee_email)
+        payer_trans = Transaction.where('payer_email = ? and payee_email = ?', payer_email, payee_email)
+        sum = 0
+        if not payer_trans.nil?
+            payer_trans.each do |t|
+                sum -= t["amount"] * t["percentage"]
+            end
+        end
+        payee_trans = Transaction.where('payer_email = ? and payee_email = ?', payee_email, payer_email)
+        if not payee_trans.nil?
+            payee_trans.each do |t|
+                sum += t["amount"] * t["percentage"]
+            end
+        end
+        return sum
+    end
+
     def self.all_user_mails
         # class method to get all user emails
         user_mails = []

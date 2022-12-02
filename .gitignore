@@ -66,5 +66,8 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 
+# Ignore coverage files
+/coverage
+
 .ruby-version
 .DS_Store

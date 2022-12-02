@@ -1,0 +1,15 @@
+<h2>Start a repayment</h2>
+
+<%= form_tag repayments_path, :class => 'form' do %>
+  <%= label :repayment, :payee_email, 'Payee Email', :class => 'col-form-label' %>
+  <%= select :repayment, :payee_email, @users, {}, {:class => 'form-control col-3'} %>
+  <%= label :repayment, :description, 'Description', :class => 'col-form-label' %>
+  <%= text_field :repayment, :description, :class => 'form-control' %>
+  <%= label :repayment, :currency, 'Currency', :class => 'col-form-label' %>
+  <%= select :repayment, :currency, ['US dollar', 'Rupee', 'Euro', 'Yen', 'Yuan', 'Canadian dollar'], {}, {:class => 'form-control col-2'} %>
+  <%= label :repayment, :amount, 'Amount', :class => 'col-form-label' %>
+  <%= text_field :repayment, :amount, :class => 'form-control' %>
+  <br/>
+  <%= submit_tag 'Save Changes', :class => 'btn btn-info' %>
+  <%= link_to 'Cancel', repayments_path, :class => 'btn btn-secondary' %>
+<% end %>

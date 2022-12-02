@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221111224403) do
+ActiveRecord::Schema.define(version: 20221201225946) do
+
+  create_table "repayments", force: :cascade do |t|
+    t.string   "payer_email"
+    t.string   "payee_email"
+    t.string   "currency"
+    t.float    "amount"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "transactions", force: :cascade do |t|
     t.string   "payer_email"
