@@ -31,10 +31,10 @@ class TransactionsController < ApplicationController
                 end
             else 
                 @total_dues += transaction['amount']
-                if not money_map.key?(payee)
-                    money_map[payee] = - transaction['amount']
+                if not money_map.key?(payer)
+                    money_map[payer] = - transaction['amount']
                 else 
-                    money_map[payee] += - transaction['amount']
+                    money_map[payer] += - transaction['amount']
                 end
             end
         end
@@ -134,7 +134,7 @@ class TransactionsController < ApplicationController
     # Making "internal" methods private is not required, but is a common practice.
     # This helps make clear which methods respond to requests, and which ones do not.
     def transaction_params
-        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp)
+        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp, :tag)
     end
 end
 

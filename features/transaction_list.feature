@@ -112,7 +112,12 @@ When I login as aladdin
 Scenario: I want to filter transactions by tag ans start date
 When I login as aladdin
   And I follow "View all transactions"
-  Then I should see 1 transactions from '1990-01-01' to '' with tag 'Bar' 
+  Then I should see 1 transactions from '1990-01-01' to '' with tag 'Bar'
+
+Scenario: I want to filter transactions by empty fields
+When I login as aladdin
+  And I follow "View all transactions"
+  Then I should see 1 transactions from '' to '' with tag '' 
 
 Scenario: I want to view my profile
 When I login as aladdin
