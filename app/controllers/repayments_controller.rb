@@ -2,13 +2,6 @@ require 'date'
 class RepaymentsController < ApplicationController
     before_action :check_login
 
-    def show
-        id = params[:id]
-        @user = User.find_user(params[:user_email])
-        @transaction = Transaction.find(id)
-        @converted_amount = convert_amount
-    end
-
     def check_login
         if session[:user_email] == nil
             flash[:notice] = "Invalid session, please login."
@@ -17,7 +10,7 @@ class RepaymentsController < ApplicationController
     end
 
 
-    def list
+    def index
         @user_email = session[:user_email]
         filter_form = params["filter_form"]
         @repayments = Repayment.all_repayment_for_user(session[:user_email])
@@ -30,9 +23,13 @@ class RepaymentsController < ApplicationController
 
     def validate_create
         flag = false
-        if transaction_params['payer_email'] == transaction_params['payee_email']
+
+        if session[:user_email] == params["repayment"]['payee_email']
             flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
-        elsif transaction_params['amount'] > Transaction.owe_money(session[:user_email], transaction_params['payee_email'])
+        elsif params["repayment"]['amount'].to_i > Transaction.owe_money(session[:user_email], params["repayment"]['payee_email'])
+            puts params["repayment"]['amount']
+            puts "---"
+            puts Transaction.owe_money(session[:user_email], params["repayment"]['payee_email'])
             flash[:notice] = "Invalid transaction - you can't repay more than what you owe"
         else
             flag = true
