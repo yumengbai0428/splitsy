@@ -4,10 +4,10 @@ RSpec.describe Transaction, type: :model do
   describe "all_transactions_for_user" do
     before :each do
       User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5)
-      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
-      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
-      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
+      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 50)
+      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 100)
+      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 75)
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 33)
       @transactions = Transaction.all
     end
 
@@ -29,10 +29,10 @@ RSpec.describe Transaction, type: :model do
   describe "all_transactions_by_tag" do
     before :each do
       User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5, tag: 'food')
-      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
-      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
-      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
+      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 50, tag: 'food')
+      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 100)
+      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 75)
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 33)
       @transactions = Transaction.all
     end
     
@@ -54,10 +54,10 @@ RSpec.describe Transaction, type: :model do
   describe "all_transactions_by_time" do
     before :each do
       User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5, timestamp: '2022-11-11')
-      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp: '2022-11-13')
-      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp: '2022-11-12')
-      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, timestamp: '2022-11-11')
+      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 50, timestamp: '2022-11-11')
+      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 100, timestamp: '2022-11-13')
+      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 75, timestamp: '2022-11-12')
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 33, timestamp: '2022-11-11')
       @transactions = Transaction.all
     end
     
@@ -79,11 +79,11 @@ RSpec.describe Transaction, type: :model do
   describe "all_transactions_tag_time" do
     before :each do
       User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
-      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5, timestamp: '2022-11-11')
-      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1, timestamp: '2022-11-13')
-      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, timestamp: '2022-11-12')
-      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, tag: 'food', timestamp: '2022-11-11')
-      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 300, percentage: 0.33, timestamp: '2022-11-11')
+      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 50, timestamp: '2022-11-11')
+      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 100, timestamp: '2022-11-13')
+      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 75, timestamp: '2022-11-12')
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 33, tag: 'food', timestamp: '2022-11-11')
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 300, percentage: 33, timestamp: '2022-11-11')
       @transactions = Transaction.all
     end
     
@@ -120,11 +120,11 @@ RSpec.describe Transaction, type: :model do
 
   describe "owe money" do
     before :each do
-      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 0.5)
-      Transaction.create(payer_email: 'b@g',payee_email: 'a@g', description: 'd2', currency: '$', amount: 50, percentage: 0.5)
-      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 1)
-      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75)
-      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33)
+      Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 50)
+      Transaction.create(payer_email: 'b@g',payee_email: 'a@g', description: 'd2', currency: '$', amount: 50, percentage: 50)
+      Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 100)
+      Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 75)
+      Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 33)
     end
 
     context 'owe money' do
