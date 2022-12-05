@@ -17,6 +17,8 @@
   <%= date_field :transaction, :timestamp, :value => Time.now.strftime('%Y-%m-%d'), :class => 'form-control' %>
   <%= label :transaction, :tag, 'Tag', :class => 'col-form-label' %>
   <%= text_field :transaction, :tag, :class => 'form-control' %>
+  <%= label :transaction, :repeat_period, 'Repeat Period (In minutes)', :class => 'col-form-label' %>
+  <%= text_field :transaction, :repeat_period, :class => 'form-control' %>
   <br/>
   <%= submit_tag 'Save Changes', :class => 'btn btn-info' %>
   <%= link_to 'Cancel', transactions_path, :class => 'btn btn-secondary' %>

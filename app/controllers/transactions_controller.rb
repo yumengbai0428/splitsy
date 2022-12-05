@@ -246,6 +246,29 @@ class TransactionsController < ApplicationController
     def index
         @user_email = session[:user_email]
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
+
+        @current_time = Time.now
+        @transactions.each do |transaction|
+            @start_time = transaction.timestamp
+            @repeat_period = transaction.repeat_period
+            @end_time = @start_time + @repeat_period*60
+            if (@current_time > @end_time and transaction.repeat_period>0)
+                @params1 = { "payer_email" => transaction.payer_email, "payee_email" => transaction.payee_email,
+                "description" => transaction.description, "currency" => transaction.currency, 
+                "amount" => transaction.amount, "percentage" =>transaction.percentage, 
+                "timestamp" => @current_time, "tag" => transaction.tag,
+                "repeat_period" => transaction.repeat_period}
+                @params2 = { "payer_email" => transaction.payer_email, "payee_email" => transaction.payee_email,
+                "description" => transaction.description, "currency" => transaction.currency, 
+                "amount" => transaction.amount, "percentage" =>transaction.percentage, 
+                "timestamp" => transaction.timestamp, "tag" => transaction.tag,
+                "repeat_period" => 0}
+                transaction.update_attributes!(@params2)
+                Transaction.create!(@params1)
+            end
+        end
+
+        @transactions = Transaction.all_transactions_for_user(session[:user_email])
         @repayments = Repayment.all_repayment_for_user(session[:user_email])
         @persons = transform
     end
@@ -285,12 +308,15 @@ class TransactionsController < ApplicationController
 
     def validate_create
         flag = false
+        print(transaction_params['repeat_period'])
         if transaction_params['payer_email'] != session[:user_email] and transaction_params['payee_email'] != session[:user_email]
             flash[:notice] = "Invalid transaction - payer or payee must be you."
         elsif transaction_params['payer_email'] == transaction_params['payee_email']
             flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
         elsif Date.iso8601(transaction_params['timestamp']) > Date.today
             flash[:notice] = "Invalid transaction - date cannot be in the future."
+        elsif not(transaction_params['repeat_period'] =~ /^[0-9]*$/) 
+            flash[:notice] = "Invalid transaction - Repeat period should be a number."
         else
             flag = true
         end
@@ -330,6 +356,6 @@ class TransactionsController < ApplicationController
     # Making "internal" methods private is not required, but is a common practice.
     # This helps make clear which methods respond to requests, and which ones do not.
     def transaction_params
-        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp, :tag)
+        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp, :tag, :repeat_period)
     end
 end
