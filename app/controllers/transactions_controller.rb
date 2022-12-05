@@ -1,4 +1,6 @@
 require 'date'
+require 'googlecharts'
+
 class TransactionsController < ApplicationController
     before_action :check_login
     def show
@@ -164,7 +166,6 @@ class TransactionsController < ApplicationController
             end
         end
 
-
         persons = []
         money_map.each do |key, value|
             pmap = {}
@@ -173,6 +174,73 @@ class TransactionsController < ApplicationController
             persons.push(pmap)
         end
         return persons
+    end
+
+    def line_chart_values
+        timestamps = {}
+        user = session[:user_email]
+        transactions = Transaction.all_transactions_for_user(user)
+        transactions.each do |transaction|
+            is_payer = transaction.payer_email == user
+            time = transaction.timestamp.to_time.to_i
+            if is_payer
+                if not timestamps.include?(time)
+                    timestamps[time] = transaction.amount * (1 - transaction.percentage/100)
+                else
+                    timestamps[time] += transaction.amount * (1 - transaction.percentage/100)
+                end
+            else
+                if not timestamps.include?(time)
+                    timestamps[time] = transaction.amount * (transaction.percentage/100)
+                else
+                    timestamps[time] += transaction.amount * (transaction.percentage/100)
+                end
+            end
+        end
+        return timestamps
+    end
+
+    def pie_chart_aggregate
+        user = session[:user_email]
+        transactions = Transaction.all_transactions_for_user(user)
+        tags = {}
+        transactions.each do |transaction|
+            is_payer = transaction.payer_email == user
+            if is_payer
+                if not tags.include?(transaction.tag)
+                    tags[transaction.tag] = transaction.amount * (1 - transaction.percentage/100)
+                else
+                    tags[transaction.tag] += transaction.amount * (1 - transaction.percentage/100)
+                end
+            else
+                if not tags.include?(transaction.tag)
+                    tags[transaction.tag] = transaction.amount * (transaction.percentage/100)
+                else
+                    tags[transaction.tag] += transaction.amount * (transaction.percentage/100)
+                end
+            end
+        end
+        return tags
+    end
+
+    def visualize
+        transactions = Transaction.all_transactions_for_user(session[:user_email])
+        amounts = []
+        transactions.each do |transaction|
+            amounts.push(transaction.amount)
+        end
+        values = line_chart_values
+        @line_chart = Gchart.line( 
+                :bg => 'ffffff',
+                :axis_with_labels => 'y',
+                :legend => ['Spending'],
+                :data => [values.values])
+        
+        tags = pie_chart_aggregate
+        @pie_chart = Gchart.pie(
+                :bg => 'ffffff',
+                :legend => tags.keys,
+                :data => tags.values)
     end
 
     def index
@@ -265,4 +333,3 @@ class TransactionsController < ApplicationController
         params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp, :tag)
     end
 end
-

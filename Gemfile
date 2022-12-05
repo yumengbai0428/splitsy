@@ -44,3 +44,4 @@ end
 
 #Currency
 gem 'concurrency'
+gem 'googlecharts'
