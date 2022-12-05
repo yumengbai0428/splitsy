@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20221204225318) do
     t.float    "percentage"
     t.datetime "timestamp"
     t.string   "tag",           default: "expenditure"
-    t.integer  "repeat_period"
+    t.integer  "repeat_period", default: 0
   end
 
   create_table "users", force: :cascade do |t|
