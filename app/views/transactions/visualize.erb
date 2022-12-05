@@ -1,0 +1,7 @@
+<h3>Your spending habits!</h3>
+<h5>Chart of spending in the last 60 days</h5>
+<%= image_tag "#{@line_chart}", style: 'height:75%;width:75%;margin-bottom:20px;' %>
+<h5>Split in expenditure by category</h5>
+<%= image_tag "#{@pie_chart}", style: 'height:75%;width:75%;margin-bottom:20px;' %>
+<br>
+<%= link_to 'Back to transaction list', transactions_path, :class => 'btn btn-info' %>

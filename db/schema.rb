@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221201225946) do
+ActiveRecord::Schema.define(version: 20221204225318) do
 
   create_table "repayments", force: :cascade do |t|
     t.string   "payer_email"
@@ -27,11 +27,12 @@ ActiveRecord::Schema.define(version: 20221201225946) do
     t.string   "payer_email"
     t.string   "payee_email"
     t.text     "description"
-    t.string   "currency",    default: "US dollar"
+    t.string   "currency",      default: "US dollar"
     t.float    "amount"
     t.float    "percentage"
     t.datetime "timestamp"
-    t.string   "tag",         default: "expenditure"
+    t.string   "tag",           default: "expenditure"
+    t.integer  "repeat_period"
   end
 
   create_table "users", force: :cascade do |t|

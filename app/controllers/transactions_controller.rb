@@ -1,4 +1,6 @@
 require 'date'
+require 'googlecharts'
+
 class TransactionsController < ApplicationController
     before_action :check_login
     def show
@@ -164,7 +166,6 @@ class TransactionsController < ApplicationController
             end
         end
 
-
         persons = []
         money_map.each do |key, value|
             pmap = {}
@@ -175,8 +176,98 @@ class TransactionsController < ApplicationController
         return persons
     end
 
+    def line_chart_values
+        timestamps = {}
+        user = session[:user_email]
+        transactions = Transaction.all_transactions_for_user(user)
+        transactions.each do |transaction|
+            is_payer = transaction.payer_email == user
+            time = transaction.timestamp.to_time.to_i
+            if is_payer
+                if not timestamps.include?(time)
+                    timestamps[time] = transaction.amount * (1 - transaction.percentage/100)
+                else
+                    timestamps[time] += transaction.amount * (1 - transaction.percentage/100)
+                end
+            else
+                if not timestamps.include?(time)
+                    timestamps[time] = transaction.amount * (transaction.percentage/100)
+                else
+                    timestamps[time] += transaction.amount * (transaction.percentage/100)
+                end
+            end
+        end
+        return timestamps
+    end
+
+    def pie_chart_aggregate
+        user = session[:user_email]
+        transactions = Transaction.all_transactions_for_user(user)
+        tags = {}
+        transactions.each do |transaction|
+            is_payer = transaction.payer_email == user
+            if is_payer
+                if not tags.include?(transaction.tag)
+                    tags[transaction.tag] = transaction.amount * (1 - transaction.percentage/100)
+                else
+                    tags[transaction.tag] += transaction.amount * (1 - transaction.percentage/100)
+                end
+            else
+                if not tags.include?(transaction.tag)
+                    tags[transaction.tag] = transaction.amount * (transaction.percentage/100)
+                else
+                    tags[transaction.tag] += transaction.amount * (transaction.percentage/100)
+                end
+            end
+        end
+        return tags
+    end
+
+    def visualize
+        transactions = Transaction.all_transactions_for_user(session[:user_email])
+        amounts = []
+        transactions.each do |transaction|
+            amounts.push(transaction.amount)
+        end
+        values = line_chart_values
+        @line_chart = Gchart.line( 
+                :bg => 'ffffff',
+                :axis_with_labels => 'y',
+                :legend => ['Spending'],
+                :data => [values.values])
+        
+        tags = pie_chart_aggregate
+        @pie_chart = Gchart.pie(
+                :bg => 'ffffff',
+                :legend => tags.keys,
+                :data => tags.values)
+    end
+
     def index
         @user_email = session[:user_email]
+        @transactions = Transaction.all_transactions_for_user(session[:user_email])
+
+        @current_time = Time.now
+        @transactions.each do |transaction|
+            @start_time = transaction.timestamp
+            @repeat_period = transaction.repeat_period
+            @end_time = @start_time + @repeat_period*60
+            if (@current_time > @end_time and transaction.repeat_period>0)
+                @params1 = { "payer_email" => transaction.payer_email, "payee_email" => transaction.payee_email,
+                "description" => transaction.description, "currency" => transaction.currency, 
+                "amount" => transaction.amount, "percentage" =>transaction.percentage, 
+                "timestamp" => @current_time, "tag" => transaction.tag,
+                "repeat_period" => transaction.repeat_period}
+                @params2 = { "payer_email" => transaction.payer_email, "payee_email" => transaction.payee_email,
+                "description" => transaction.description, "currency" => transaction.currency, 
+                "amount" => transaction.amount, "percentage" =>transaction.percentage, 
+                "timestamp" => transaction.timestamp, "tag" => transaction.tag,
+                "repeat_period" => 0}
+                transaction.update_attributes!(@params2)
+                Transaction.create!(@params1)
+            end
+        end
+
         @transactions = Transaction.all_transactions_for_user(session[:user_email])
         @repayments = Repayment.all_repayment_for_user(session[:user_email])
         @persons = transform
@@ -217,12 +308,15 @@ class TransactionsController < ApplicationController
 
     def validate_create
         flag = false
+        print(transaction_params['repeat_period'])
         if transaction_params['payer_email'] != session[:user_email] and transaction_params['payee_email'] != session[:user_email]
             flash[:notice] = "Invalid transaction - payer or payee must be you."
         elsif transaction_params['payer_email'] == transaction_params['payee_email']
             flash[:notice] = "Invalid transaction - payer and payee cannot be the same user."
         elsif Date.iso8601(transaction_params['timestamp']) > Date.today
             flash[:notice] = "Invalid transaction - date cannot be in the future."
+        elsif not(transaction_params['repeat_period'] =~ /^[0-9]*$/) 
+            flash[:notice] = "Invalid transaction - Repeat period should be a number."
         else
             flag = true
         end
@@ -262,7 +356,6 @@ class TransactionsController < ApplicationController
     # Making "internal" methods private is not required, but is a common practice.
     # This helps make clear which methods respond to requests, and which ones do not.
     def transaction_params
-        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp, :tag)
+        params.require(:transaction).permit(:payer_email, :payee_email, :description, :currency, :amount, :percentage, :timestamp, :tag, :repeat_period)
     end
 end
-
