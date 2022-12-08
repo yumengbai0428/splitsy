@@ -230,17 +230,25 @@ class TransactionsController < ApplicationController
             amounts.push(transaction.amount)
         end
         values = line_chart_values
-        @line_chart = Gchart.line( 
-                :bg => 'ffffff',
-                :axis_with_labels => 'y',
-                :legend => ['Spending'],
-                :data => [values.values])
+        if not values.empty?()
+            @line_chart = Gchart.line( 
+                    :bg => 'ffffff',
+                    :axis_with_labels => 'y',
+                    :legend => ['Spending'],
+                    :data => [values.values])
+        else 
+            @line_chart = "image_path('/app/assets/images/no_data.jpeg')"
+        end
         
         tags = pie_chart_aggregate
-        @pie_chart = Gchart.pie(
-                :bg => 'ffffff',
-                :legend => tags.keys,
-                :data => tags.values)
+        if not tags.empty?()
+            @pie_chart = Gchart.pie(
+                    :bg => 'ffffff',
+                    :legend => tags.keys,
+                    :data => tags.values)
+        else 
+            @pie_chart = "image_path('/app/assets/images/no_data.jpeg')"
+        end
     end
 
     def index
