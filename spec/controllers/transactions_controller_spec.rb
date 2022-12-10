@@ -253,6 +253,12 @@ describe TransactionsController, :type => :controller do
         Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 0.75, tag: 'expenditure', timestamp: '2022-11-11')
         Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 0.33, tag: 'expenditure', timestamp: '2022-11-11')
       end
+
+      it "nil form" do
+        get :list, {filter_form:nil}, {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(3)
+      end
+
       it "no parameter" do
         get :list, {filter_form:{}}, {user_email: 'a@g'}
         expect(assigns(:transactions).size).to eq(3)
