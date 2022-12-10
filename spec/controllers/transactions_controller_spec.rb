@@ -216,6 +216,34 @@ describe TransactionsController, :type => :controller do
         expect(assigns(:transactions).size).to eq(5)
       end
     end
+
+    context "Index with repayments" do
+      before :each do
+        User.create(name: 'a', email: 'a@g', password: 'p2', default_currency: 'Yen')
+        User.create(name: 'b', email: 'b@g', password: 'p2', default_currency: 'Yen')
+        Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 100, timestamp:Time.new)
+        Transaction.create(payer_email: 'a@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 100, percentage: 100, timestamp:Time.new)
+        Transaction.create(payer_email: 'a@g',payee_email: 'c@g', description: 'd2', currency: '$', amount: 50, percentage: 100, timestamp:Time.new)
+        Transaction.create(payer_email: 'b@g',payee_email: 'c@g', description: 'd3', currency: '$', amount: 200, percentage: 100, timestamp:Time.new)
+        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 100, timestamp:Time.new)
+        Transaction.create(payer_email: 'd@g',payee_email: 'a@g', description: 'd4', currency: '$', amount: 300, percentage: 100, timestamp:Time.new)
+        Repayment.create(payer_email: 'b@g',payee_email: 'a@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'a@g',payee_email: 'd@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'c@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'b@g',payee_email: 'a@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'a@g',payee_email: 'd@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'c@g',payee_email: 'b@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'e@g',payee_email: 'a@g', description: 'd1', currency: '$', amount: 1)
+        Repayment.create(payer_email: 'a@g',payee_email: 'f@g', description: 'd1', currency: '$', amount: 1)
+        @transactions = Transaction.all
+      end
+      
+      it "Contains the correct number of transations" do
+        get :index,nil,  {user_email: 'a@g'}
+        expect(assigns(:transactions).size).to eq(5)
+        expect(assigns(:repayments).size).to eq(6)
+      end
+    end
   
 
     context "list" do
