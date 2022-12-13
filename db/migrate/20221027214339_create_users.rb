@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
       u.string :name
       u.string :email
       u.string :password
-      u.string :default_currency, :default => "US dollar"
+      u.string :default_currency, :default => "USD"
     end
   end
 end

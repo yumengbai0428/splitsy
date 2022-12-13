@@ -1,5 +1,8 @@
 require 'date'
 require 'googlecharts'
+require "uri"
+require 'json'
+require "net/http"
 
 class TransactionsController < ApplicationController
     before_action :check_login
@@ -17,127 +20,44 @@ class TransactionsController < ApplicationController
         end
     end
 
-    def get_conv_factor(default_currency, transaction_currency)
-        case default_currency
-        when 'Canadian dollar'
-            if transaction_currency == 'Yuan'
-                conv_factor = 0.19
-            elsif transaction_currency == 'Yen'
-                conv_factor = 0.01
-            elsif transaction_currency == 'US dollar'
-                conv_factor = 1.34
-            elsif transaction_currency == 'Euro'
-                conv_factor = 1.41
-            elsif transaction_currency == 'Rupee'
-                conv_factor = 0.02
-            else
-                conv_factor = 1
-            end
-            #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "CAD", "USD")
-        when 'Yuan'
-            if transaction_currency== 'Canadian dollar'
-                conv_factor = 5.25
-            elsif transaction_currency == 'Yen'
-                conv_factor = 0.05
-            elsif transaction_currency == 'US dollar'
-                conv_factor = 7.04
-            elsif transaction_currency == 'Euro'
-                conv_factor = 7.42
-            elsif transaction_currency == 'Rupee'
-                conv_factor = 0.09
-            else
-                conv_factor = 1
-            end
-            #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "CNY", "USD")
-        when 'Rupee'
-            if transaction_currency == 'Yuan'
-                conv_factor = 11.52
-            elsif transaction_currency == 'Yen'
-                conv_factor = 0.60
-            elsif transaction_currency == 'US dollar'
-                conv_factor = 81.12
-            elsif transaction_currency == 'Euro'
-                conv_factor = 85.47
-            elsif transaction_currency == 'Canadian dollar'
-                conv_factor = 60.42
-            else
-                conv_factor = 1
-            end
-            #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "INR", "USD")
-        when 'Yen'
-            if transaction_currency == 'Yuan'
-                conv_factor = 19
-            elsif transaction_currency == 'Canadian dollar'
-                conv_factor = 101
-            elsif transaction_currency == 'US dollar'
-                conv_factor = 135
-            elsif transaction_currency == 'Euro'
-                conv_factor = 142
-            elsif transaction_currency == 'Rupee'
-                conv_factor = 2
-            else
-                conv_factor = 1
-            end
-            #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "JPY", "USD")
-        when 'Euro'
-            if transaction_currency == 'Yuan'
-                conv_factor = 0.13
-            elsif transaction_currency == 'Yen'
-                conv_factor = 0.01
-            elsif transaction_currency == 'US dollar'
-                conv_factor = 0.95
-            elsif transaction_currency == 'Canadian dollar'
-                conv_factor = 0.71
-            elsif transaction_currency == 'Rupee'
-                conv_factor = 0.01
-            else
-                conv_factor = 1
-            end
-            #transaction_params['amount'] = Concurrency.convert(transaction_params['amount'], "EUR", "USD")
-        else
-            if transaction_currency == 'Yuan'
-                conv_factor = 0.14
-            elsif transaction_currency == 'Yen'
-                conv_factor = 0.01
-            elsif transaction_currency == 'Canadian dollar'
-                conv_factor = 0.74
-            elsif transaction_currency == 'Euro'
-                conv_factor = 1.05
-            elsif transaction_currency == 'Rupee'
-                conv_factor = 0.01
-            else
-                conv_factor = 1
-            end
-        end
-        return conv_factor
-
+    def url_gen(base, conv)
+        url = "https://api.currencyfreaks.com/latest?apikey=9426ee4316f243f583d92b160ee7d3bd&base="+base+"&symbols="+conv
     end
 
     def transform
         money_map = {}
         @total_dues = 0
-        conv_factor = 1.0
 
         @transactions.each do |transaction|
-            default_currency=User.where('email = ?', session[:user_email])[0].default_currency
-            conv_factor = get_conv_factor(default_currency, transaction["currency"])
+            user_currency = User.where('email = ?', session[:user_email])[0].default_currency
+            url = URI(url_gen(transaction['currency'],user_currency))
+            https = Net::HTTP.new(url.host, url.port);
+            https.use_ssl = true
+            request = Net::HTTP::Get.new(url)
+            response = JSON.parse(https.request(request).read_body)
+            conv = response["rates"][user_currency]
+            amount = (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv.to_f).round(2)
+
+            payer = transaction['payer_email']
+            payee = transaction['payee_email']
+            is_payer = payer == session[:user_email]
 
             payer = transaction['payer_email']
             payee = transaction['payee_email']
             is_payer = payer == session[:user_email]
             if is_payer
-                @total_dues -= (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
+                @total_dues -= amount
                 if not money_map.key?(payee)
-                    money_map[payee] = -(transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
+                    money_map[payee] = -amount
                 else 
-                    money_map[payee] -= (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
+                    money_map[payee] -=amount
                 end
             else
-                @total_dues += (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
+                @total_dues +=amount
                 if not money_map.key?(payer)
-                    money_map[payer] = (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
+                    money_map[payer] = amount
                 else 
-                    money_map[payer] +=(transaction['amount']*(transaction['percentage'].to_f/100.0) * conv_factor).round(2)
+                    money_map[payer] +=amount
                 end
             end
         end
@@ -258,6 +178,9 @@ class TransactionsController < ApplicationController
         @current_time = Time.now
         @transactions.each do |transaction|
             @start_time = transaction.timestamp
+            if transaction.repeat_period.nil? 
+                transaction.repeat_period=0
+            end
             @repeat_period = transaction.repeat_period
             @end_time = @start_time + @repeat_period*60
             if (@current_time > @end_time and transaction.repeat_period>0)

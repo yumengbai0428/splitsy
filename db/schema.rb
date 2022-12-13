@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20221204225318) do
     t.string   "payer_email"
     t.string   "payee_email"
     t.text     "description"
-    t.string   "currency",      default: "US dollar"
+    t.string   "currency",      default: "USD"
     t.float    "amount"
     t.float    "percentage"
     t.datetime "timestamp"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20221204225318) do
     t.string "name"
     t.string "email"
     t.string "password"
-    t.string "default_currency", default: "US dollar"
+    t.string "default_currency", default: "USD"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
