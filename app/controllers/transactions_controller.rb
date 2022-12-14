@@ -36,6 +36,7 @@ class TransactionsController < ApplicationController
             request = Net::HTTP::Get.new(url)
             response = JSON.parse(https.request(request).read_body)
             conv = response["rates"][user_currency]
+            session[:conv] = conv
             amount = (transaction['amount']*(transaction['percentage'].to_f/100.0) * conv.to_f).round(2)
 
             payer = transaction['payer_email']
@@ -63,25 +64,30 @@ class TransactionsController < ApplicationController
         end
 
         @repayments.each do |repayment|
-            default_currency=User.where('email = ?', session[:user_email])[0].default_currency
-            conv_factor = get_conv_factor(default_currency, repayment["currency"])
+            user_currency = User.where('email = ?', session[:user_email])[0].default_currency
+            url = URI(url_gen(transaction['currency'],user_currency))
+            https = Net::HTTP.new(url.host, url.port);
+            https.use_ssl = true
+            request = Net::HTTP::Get.new(url)
+            response = JSON.parse(https.request(request).read_body)
+            conv = response["rates"][user_currency].to_f
 
             payer = repayment['payer_email']
             payee = repayment['payee_email']
             is_payer = payer == session[:user_email]
             if is_payer
-                @total_dues -= (repayment['amount'] * conv_factor).round(2)
+                @total_dues -= (repayment['amount'] * conv).round(2)
                 if not money_map.key?(payee)
-                    money_map[payee] = -(repayment['amount'] * conv_factor).round(2)
+                    money_map[payee] = -(repayment['amount'] * conv).round(2)
                 else 
-                    money_map[payee] -= (repayment['amount'] * conv_factor).round(2)
+                    money_map[payee] -= (repayment['amount'] * conv).round(2)
                 end
             else
-                @total_dues += (repayment['amount'] * conv_factor).round(2)
+                @total_dues += (repayment['amount'] * conv).round(2)
                 if not money_map.key?(payer)
-                    money_map[payer] = (repayment['amount'] * conv_factor).round(2)
+                    money_map[payer] = (repayment['amount'] * conv).round(2)
                 else 
-                    money_map[payer] +=(repayment['amount']* conv_factor).round(2)
+                    money_map[payer] +=(repayment['amount']* conv).round(2)
                 end
             end
         end
@@ -239,7 +245,6 @@ class TransactionsController < ApplicationController
 
     def validate_create
         flag = false
-        print(transaction_params['repeat_period'])
         if transaction_params['payer_email'] != session[:user_email] and transaction_params['payee_email'] != session[:user_email]
             flash[:notice] = "Invalid transaction - payer or payee must be you."
         elsif transaction_params['payer_email'] == transaction_params['payee_email']

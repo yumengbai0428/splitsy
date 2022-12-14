@@ -103,3 +103,6 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+def session
+  last_request.env['rack.session']
+end
