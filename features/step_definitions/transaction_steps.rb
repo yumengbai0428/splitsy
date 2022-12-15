@@ -1,5 +1,6 @@
 Given /the following transactions exist/ do |transactions_table|
   transactions_table.hashes.each do |transaction|
+    transaction["timestamp"] = Time.now()
     Transaction.create(transaction)
   end
 end
@@ -56,7 +57,7 @@ Then /I should be able to add and delete a transaction from (.*) to (.*)/ do |pa
     :payer_email => payer_email, 
     :payee_email => payee_email, 
     :description => 'Test transaction', 
-    :currency => 'US dollar', 
+    :currency => 'USD', 
     :amount => 1000, 
     :percentage => 0.5,
   )

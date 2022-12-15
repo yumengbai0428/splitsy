@@ -185,10 +185,11 @@ class TransactionsController < ApplicationController
         @transactions.each do |transaction|
             @start_time = transaction.timestamp
             if transaction.repeat_period.nil? 
-                transaction.repeat_period=0
+                @repeat_period = 0
+            else
+                @repeat_period = transaction.repeat_period
             end
-            @repeat_period = transaction.repeat_period
-            @end_time = @start_time + @repeat_period*60
+            @end_time = @start_time + @repeat_period * 60
             if (@current_time > @end_time and transaction.repeat_period>0)
                 @params1 = { "payer_email" => transaction.payer_email, "payee_email" => transaction.payee_email,
                 "description" => transaction.description, "currency" => transaction.currency, 

@@ -6,21 +6,21 @@ Feature: display list of all transactions
 Background: transactions have been added to database
 
   Given the following transactions exist:
-  | payer_email           | payee_email          | description           | currency       | amount | percentage |
-  | aladdin@columbia.edu  | bob@columbia.edu     | Thai food for lunch   | US dollar      | 50     | 0.25       |
-  | aladdin@columbia.edu  | bob@columbia.edu     | Concert               | US dollar      | 100    | 0.5        |
-  | aladdin@columbia.edu  | carla@columbia.edu   | Bar                   | US dollar      | 20     | 0.75       |
-  | david@columbia.edu    | aladdin@columbia.edu | School supplies       | US dollar      | 20     | 1          |
-  | emma@columbia.edu     | aladdin@columbia.edu | Rent1                 | US dollar      | 2000   | 0.33       |
-  | emma@columbia.edu     | jack@columbia.edu    | Rent2                 | US dollar      | 2000   | 0.33       |
-  | emma@columbia.edu     | iris@columbia.edu    | Rent3                 | US dollar      | 2000   | 0.33       |
+  | payer_email           | payee_email          | description           | currency       | amount | percentage | repeat_period |
+  | aladdin@columbia.edu  | bob@columbia.edu     | Thai food for lunch   | USD            | 50     | 25       | 0               |
+  | aladdin@columbia.edu  | bob@columbia.edu     | Concert               | USD            | 100    | 50       | 0               |
+  | aladdin@columbia.edu  | carla@columbia.edu   | Bar                   | USD            | 20     | 75       | 0               |
+  | david@columbia.edu    | aladdin@columbia.edu | School supplies       | USD            | 20     | 100      | 0               |
+  | emma@columbia.edu     | aladdin@columbia.edu | Rent1                 | USD            | 2000   | 33       | 0               |
+  | emma@columbia.edu     | jack@columbia.edu    | Rent2                 | USD            | 2000   | 33       | 0               |
+  | emma@columbia.edu     | iris@columbia.edu    | Rent3                 | USD            | 2000   | 33       | 0               |
 
   Given the following users exist:
   | name   | email               | password     | default_currency      
-  | Bob    | bob@columbia.edu    | password     | US dollar
-  | Carla  | carla@columbia.edu  | password     | US dollar
-  | David  | david@columbia.edu  | password     | US dollar
-  | Emma   | emma@columbia.edu   | password     | US dollar
+  | Bob    | bob@columbia.edu    | password     | USD
+  | Carla  | carla@columbia.edu  | password     | USD
+  | David  | david@columbia.edu  | password     | USD
+  | Emma   | emma@columbia.edu   | password     | USD
 
   And I am on the Splitsy home page
 
@@ -32,42 +32,42 @@ When I login as aladdin
 Scenario: I want to add a new transaction
 When I login as aladdin
   And I follow "Add new transaction"
-  And I create new transaction with details 'aladdin@columbia.edu', 'bob@columbia.edu', 'test', 'US dollar', '34', '50' 
+  And I create new transaction with details 'aladdin@columbia.edu', 'bob@columbia.edu', 'test', 'USD', '34', '50' 
   Then I should see 'successfully created'
 
 Scenario: For a new transaction, payer or payee must not be same
 When I login as aladdin
   Then I am on the Splitsy home page
   Then I follow "Add new transaction"
-  Then I create a transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'US dollar', '34', '50' 
+  Then I create a transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'USD', '34', '50' 
   Then I am on the Splitsy home page
 
 Scenario: For a new transaction, date must not be a future date
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I fill with details 'aladdin@columbia.edu', 'emma@columbia.edu', 'test', 'US dollar', '34', '50', '2025-12-12'
+  And I fill with details 'aladdin@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '34', '50', '2025-12-12'
   Then I should see 'Invalid transaction'
 
 Scenario: For a new transaction, payer or payee must be you
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I create new transaction with details 'david@columbia.edu', 'emma@columbia.edu', 'test', 'US dollar', '34', '50'
+  And I create new transaction with details 'david@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '34', '50'
   Then I should see 'Invalid transaction'
 
 Scenario: For a new transaction, amount/percentage cannot be negative
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I create new transaction with details 'aladdin@columbia.edu', 'emma@columbia.edu', 'test', 'US dollar', '-34', '50'
+  And I create new transaction with details 'aladdin@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '-34', '50'
   Then I should see 'Invalid'
 
 Scenario: I am logged in and I log out
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I create new transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'US dollar', '-34', '50'
+  And I create new transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'USD', '-34', '50'
   Then I should see 'Invalid transaction'
 
 Scenario: I want to edit an existing transaction
@@ -128,7 +128,7 @@ Scenario: I want to edit my profile
 When I login as aladdin
   And I follow "My Profile"
   And I follow "Edit"
-  And I choose "Default Currency" as "Rupee"
+  And I choose "Default Currency" as "INR"
   And I press "Update Your Info"
   Then I should see 'successfully updated'
 

@@ -7,10 +7,10 @@ Background: transactions have been added to database
 
   Given the following users exist:
   | name   | email               | password     | default_currency      
-  | Bob    | bob@columbia.edu    | password     | US dollar
-  | Carla  | carla@columbia.edu  | password     | US dollar
-  | David  | david@columbia.edu  | password     | US dollar
-  | Emma   | emma@columbia.edu   | password     | US dollar
+  | Bob    | bob@columbia.edu    | password     | USD
+  | Carla  | carla@columbia.edu  | password     | USD
+  | David  | david@columbia.edu  | password     | USD
+  | Emma   | emma@columbia.edu   | password     | USD
 
 Scenario: New user must be able to sign up
 When I am on the welcome page
@@ -52,7 +52,7 @@ When I am on the welcome page
   When I login as aladdin
   And I follow "My Profile"
   And I follow "Edit"
-  And I choose "Default Currency" as "Rupee"
+  And I choose "Default Currency" as "INR"
   And I press "Update Your Info"
   Then I should see 'successfully updated'
 
