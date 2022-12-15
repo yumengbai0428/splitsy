@@ -32,14 +32,14 @@ When I login as aladdin
 Scenario: I want to add a new transaction
 When I login as aladdin
   And I follow "Add new transaction"
-  And I create new transaction with details 'aladdin@columbia.edu', 'bob@columbia.edu', 'test', 'USD', '34', '50' 
+  And I create new transaction with details 'aladdin@columbia.edu', 'bob@columbia.edu', 'test', 'USD', '34', '50', '2025-12-12' 
   Then I should see 'successfully created'
 
 Scenario: For a new transaction, payer or payee must not be same
 When I login as aladdin
   Then I am on the Splitsy home page
   Then I follow "Add new transaction"
-  Then I create a transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'USD', '34', '50' 
+  Then I create a transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'USD', '34', '50', '2025-12-12' 
   Then I am on the Splitsy home page
 
 Scenario: For a new transaction, date must not be a future date
@@ -53,21 +53,21 @@ Scenario: For a new transaction, payer or payee must be you
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I create new transaction with details 'david@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '34', '50'
+  And I create new transaction with details 'david@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '34', '50', '2025-12-12'
   Then I should see 'Invalid transaction'
 
 Scenario: For a new transaction, amount/percentage cannot be negative
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I create new transaction with details 'aladdin@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '-34', '50'
+  And I create new transaction with details 'aladdin@columbia.edu', 'emma@columbia.edu', 'test', 'USD', '-34', '50', '2025-12-12'
   Then I should see 'Invalid'
 
 Scenario: I am logged in and I log out
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new transaction"
-  And I create new transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'USD', '-34', '50'
+  And I create new transaction with details 'aladdin@columbia.edu', 'aladdin@columbia.edu', 'test', 'USD', '-34', '50', '2025-12-12'
   Then I should see 'Invalid transaction'
 
 Scenario: I want to edit an existing transaction

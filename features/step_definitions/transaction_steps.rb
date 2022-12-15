@@ -130,7 +130,7 @@ Then /I fill my login details '(.*)', '(.*)'/ do |email_id, password|
   click_button "Login"
 end
 
-Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage|
+Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage, date|
   count = Transaction.all.size()
   select payer_email, :from => "Payer Email"
   select payee_email, :from => "Payee Email"
@@ -138,17 +138,19 @@ Then /I create a transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'
   select currency, :from => "Currency"
   fill_in "Amount", :with => amount
   fill_in "Percentage split", :with => percentage
+  fill_in "Date", :with => date
   click_button "Save Changes"
   expect Transaction.all.size() == count + 1
 end
 
-Then /I create new transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage|
+Then /I create new transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage, date|
   select(payer_email, from: "Payer Email")
   select(payee_email, from: "Payee Email")
   fill_in "Description", :with => description
   select currency, :from => "Currency"
   fill_in "Amount", :with => amount
   fill_in "Percentage split", :with => percentage
+  fill_in "Date", :with => date
   click_button "Save Changes"
 end
 
