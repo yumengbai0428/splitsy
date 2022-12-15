@@ -190,7 +190,7 @@ class TransactionsController < ApplicationController
                 @repeat_period = transaction.repeat_period
             end
             @end_time = @start_time + @repeat_period * 60
-            if (@current_time > @end_time and transaction.repeat_period>0)
+            if (@current_time > @end_time and @repeat_period > 0)
                 @params1 = { "payer_email" => transaction.payer_email, "payee_email" => transaction.payee_email,
                 "description" => transaction.description, "currency" => transaction.currency, 
                 "amount" => transaction.amount, "percentage" =>transaction.percentage, 
