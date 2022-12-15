@@ -88,11 +88,7 @@ describe TransactionsController, :type => :controller do
 
       it "Wrong percentage transaction" do
         transactions_count = Transaction.all.count
-<<<<<<< HEAD
         transaction = {payer_email: 'c@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 20, percentage: -0.25, timestamp:Date.today, repeat_period: 0}
-=======
-        transaction = {payer_email: 'c@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 20, percentage: -0.25, timestamp:Date.today, repeat_period: '0'}
->>>>>>> a758f5fdce3c0df380ec21d1731d576e285ff125
         post :create, {transaction: transaction}, {user_email: 'a@g'}
       
         expect(flash[:notice]).to eq("Invalid transaction amount/percentage.")
@@ -115,11 +111,7 @@ describe TransactionsController, :type => :controller do
       it "Should be create a transaction" do
 
         transactions_count = Transaction.all.count
-<<<<<<< HEAD
         transaction = {payer_email: 'c@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 20, percentage: 0.25, timestamp:Date.today, repeat_period: 0}
-=======
-        transaction = {payer_email: 'c@g',payee_email: 'a@g', description: 'd5', currency: '$', amount: 20, percentage: 0.25, timestamp:Date.today, repeat_period: '0'}
->>>>>>> a758f5fdce3c0df380ec21d1731d576e285ff125
         post :create, {transaction: transaction}, {user_email: 'c@g'}
       
         expect(flash[:notice]).to eq("Transaction was successfully created.")
