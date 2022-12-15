@@ -65,7 +65,7 @@ class TransactionsController < ApplicationController
 
         @repayments.each do |repayment|
             user_currency = User.where('email = ?', session[:user_email])[0].default_currency
-            url = URI(url_gen(transaction['currency'],user_currency))
+            url = URI(url_gen(repayment['currency'],user_currency))
             https = Net::HTTP.new(url.host, url.port);
             https.use_ssl = true
             request = Net::HTTP::Get.new(url)

@@ -50,23 +50,6 @@ class RepaymentsController < ApplicationController
         redirect_to all_repayments_path
     end
 
-    def update
-        @transaction = Transaction.find params[:id]
-        @transaction.update_attributes!(transaction_params)
-        flash[:notice] = "#{@transaction.id} was successfully updated."
-        redirect_to transaction_path(@transaction)
-    end
-
-    def convert_amount
-        return @transaction.amount.to_s + " (" + @transaction.currency + ")"
-    end
-
-    def logout
-        session[:user_email] = nil
-        flash[:notice] = "User successfully logged out."
-        redirect_to welcome_path
-    end
-
     private
     # Making "internal" methods private is not required, but is a common practice.
     # This helps make clear which methods respond to requests, and which ones do not.
