@@ -154,6 +154,18 @@ Then /I create new transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*
   click_button "Save Changes"
 end
 
+Then /I create new repeating transaction with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage, date, repeat_period|
+  select(payer_email, from: "Payer Email")
+  select(payee_email, from: "Payee Email")
+  fill_in "Description", :with => description
+  select currency, :from => "Currency"
+  fill_in "Amount", :with => amount
+  fill_in "Percentage split", :with => percentage
+  fill_in "Date", :with => date
+  fill_in "Repeat Period (In minutes)", :with => repeat_period
+  click_button "Save Changes"
+end
+
 Then /I fill with details '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)', '(.*)'/ do |payer_email, payee_email, description, currency, amount, percentage, date|
   select(payer_email, from: "Payer Email")
   select(payee_email, from: "Payee Email")
