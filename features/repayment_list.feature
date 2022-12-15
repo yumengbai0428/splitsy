@@ -40,7 +40,7 @@ When I login as aladdin
 Scenario: I want to add a new repayment
 When I login as aladdin
   And I follow "Add new repayment"
-  And I create a repayment with details 'bob@columbia.edu', 'Korean Food', 'USD', '2' 
+  And I create a repayment with details 'david@columbia.edu', 'Korean Food', 'USD', '2' 
   Then I should see 'successfully created'
 
 Scenario: For a new repayment, payee must not be you
@@ -50,9 +50,16 @@ When I login as aladdin
   And I create new repayment with details 'aladdin@columbia.edu', 'test', 'USD', '2'
   Then I should see 'Invalid transaction'
 
-Scenario: For a new repayment, amount cannot be negative
+Scenario: You cannot repay more than what you owe
 When I login as aladdin
   And I am on the Splitsy home page
   And I follow "Add new repayment"
   And I create new repayment with details 'bob@columbia.edu', 'test', 'USD', '-34'
+  Then I should see 'Invalid'
+
+Scenario: For a new repayment, amount cannot be negative
+When I login as aladdin
+  And I am on the Splitsy home page
+  And I follow "Add new repayment"
+  And I create new repayment with details 'david@columbia.edu', 'test', 'USD', '-34'
   Then I should see 'Invalid'
