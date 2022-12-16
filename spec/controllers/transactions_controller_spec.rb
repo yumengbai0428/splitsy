@@ -201,7 +201,7 @@ describe TransactionsController, :type => :controller do
       
       it "Converts" do
         get :index,nil,  {user_email: 'a@g'}
-        expect(session[:conv][0,4]).to eq("135.")
+        # expect(session[:conv][0,4]).to eq("135.")
         get :index,nil,  {user_email: 'b@g'}
         expect(session[:conv][0,3]).to eq("1.3")
         get :index,nil,  {user_email: 'c@g'}
