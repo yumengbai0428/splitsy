@@ -62,7 +62,7 @@ class TransactionsController < ApplicationController
                 end
             end
         end
-
+        
         @repayments.each do |repayment|
             user_currency = User.where('email = ?', session[:user_email])[0].default_currency
             url = URI(url_gen(repayment['currency'],user_currency))
